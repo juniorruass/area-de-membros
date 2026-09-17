@@ -45,7 +45,7 @@ function Index() {
       <img
         src="/banner-topo.jpg"
         alt="Curso Completo Bolsas & Necessaires — mais de 200 moldes completos e videoaulas"
-        className="w-full"
+        className="hidden w-full sm:block"
       />
       <Hero />
       <Sorteio />
