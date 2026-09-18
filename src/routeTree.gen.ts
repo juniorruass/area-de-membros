@@ -11,6 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuiaDeVendasRouteImport } from './routes/guia-de-vendas'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminConfiguracoesRouteImport } from './routes/admin.configuracoes'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminMoldesRouteImport } from './routes/admin.moldes'
+import { Route as AdminSorteioRouteImport } from './routes/admin.sorteio'
+import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +28,110 @@ const GuiaDeVendasRoute = GuiaDeVendasRouteImport.update({
   path: '/guia-de-vendas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
+  id: '/admin/configuracoes',
+  path: '/admin/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMoldesRoute = AdminMoldesRouteImport.update({
+  id: '/admin/moldes',
+  path: '/admin/moldes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSorteioRoute = AdminSorteioRouteImport.update({
+  id: '/admin/sorteio',
+  path: '/admin/sorteio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVideosRoute = AdminVideosRouteImport.update({
+  id: '/admin/videos',
+  path: '/admin/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/moldes': typeof AdminMoldesRoute
+  '/admin/sorteio': typeof AdminSorteioRoute
+  '/admin/videos': typeof AdminVideosRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/moldes': typeof AdminMoldesRoute
+  '/admin/sorteio': typeof AdminSorteioRoute
+  '/admin/videos': typeof AdminVideosRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/moldes': typeof AdminMoldesRoute
+  '/admin/sorteio': typeof AdminSorteioRoute
+  '/admin/videos': typeof AdminVideosRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/guia-de-vendas'
+  fullPaths:
+    | '/'
+    | '/guia-de-vendas'
+    | '/admin/configuracoes'
+    | '/admin/login'
+    | '/admin/moldes'
+    | '/admin/sorteio'
+    | '/admin/videos'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/guia-de-vendas'
-  id: '__root__' | '/' | '/guia-de-vendas'
+  to:
+    | '/'
+    | '/guia-de-vendas'
+    | '/admin/configuracoes'
+    | '/admin/login'
+    | '/admin/moldes'
+    | '/admin/sorteio'
+    | '/admin/videos'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/guia-de-vendas'
+    | '/admin/configuracoes'
+    | '/admin/login'
+    | '/admin/moldes'
+    | '/admin/sorteio'
+    | '/admin/videos'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GuiaDeVendasRoute: typeof GuiaDeVendasRoute
+  AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminMoldesRoute: typeof AdminMoldesRoute
+  AdminSorteioRoute: typeof AdminSorteioRoute
+  AdminVideosRoute: typeof AdminVideosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +150,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuiaDeVendasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes': {
+      id: '/admin/configuracoes'
+      path: '/admin/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/moldes': {
+      id: '/admin/moldes'
+      path: '/admin/moldes'
+      fullPath: '/admin/moldes'
+      preLoaderRoute: typeof AdminMoldesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/sorteio': {
+      id: '/admin/sorteio'
+      path: '/admin/sorteio'
+      fullPath: '/admin/sorteio'
+      preLoaderRoute: typeof AdminSorteioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/videos': {
+      id: '/admin/videos'
+      path: '/admin/videos'
+      fullPath: '/admin/videos'
+      preLoaderRoute: typeof AdminVideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GuiaDeVendasRoute: GuiaDeVendasRoute,
+  AdminConfiguracoesRoute: AdminConfiguracoesRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminMoldesRoute: AdminMoldesRoute,
+  AdminSorteioRoute: AdminSorteioRoute,
+  AdminVideosRoute: AdminVideosRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

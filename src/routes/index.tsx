@@ -11,8 +11,11 @@ import { Bonus } from "@/components/site/Bonus";
 import { BottomNav } from "@/components/site/BottomNav";
 import { BuyPopup } from "@/components/site/BuyPopup";
 import { PagamentoNaoIdentificado } from "@/components/site/PagamentoNaoIdentificado";
+import { getPublicData } from "@/api/public-data";
+import { siteUrl } from "@/lib/storage-url";
 
 export const Route = createFileRoute("/")({
+  loader: () => getPublicData(),
   head: () => ({
     meta: [
       { title: "Academia de Bolsas Graziele Sampaio — Curso Completo Bolsas & Necessaires em Jeans" },
@@ -38,20 +41,23 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { moldes, videos, settings, winner } = Route.useLoaderData();
   const [custo, setCusto] = useState(0);
 
   return (
     <main className="pb-20">
-      <img
-        src="/banner-topo.jpg"
-        alt="Curso Completo Bolsas & Necessaires — mais de 200 moldes completos e videoaulas"
-        className="mx-auto hidden w-full max-w-[720px] sm:block"
-      />
+      {settings.banner_url ? (
+        <img
+          src={siteUrl(settings.banner_url)}
+          alt="Curso Completo Bolsas & Necessaires — mais de 200 moldes completos e videoaulas"
+          className="mx-auto hidden w-full max-w-[720px] sm:block"
+        />
+      ) : null}
       <Hero />
-      <Sorteio />
-      <Pagamento />
-      <Moldes />
-      <Aulas />
+      <Sorteio winner={winner} />
+      <Pagamento pixKey={settings.pix_key} pixName={settings.pix_name} />
+      <Moldes moldes={moldes} />
+      <Aulas videos={videos} />
       <Precificacao custo={custo} />
       <CustoProducao onUseCost={setCusto} />
       <Bonus />
@@ -69,7 +75,10 @@ function Index() {
       </footer>
 
       <BuyPopup />
-      <PagamentoNaoIdentificado />
+      <PagamentoNaoIdentificado
+        whatsapp={settings.suporte_whatsapp}
+        whatsappLabel={settings.suporte_whatsapp_label}
+      />
       <BottomNav />
     </main>
   );

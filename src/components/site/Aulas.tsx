@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { VIDEOS } from "@/data/videos";
+import type { PublicVideo } from "@/api/public-data";
 
-export function Aulas() {
+export function Aulas({ videos }: { videos: PublicVideo[] }) {
   const [current, setCurrent] = useState(0);
-  const aula = VIDEOS[current] ?? VIDEOS[0]!;
+  const aula = videos[current] ?? videos[0];
+
+  if (!aula) return null;
 
   return (
     <section id="aulas" className="px-5 py-12">
@@ -24,7 +26,7 @@ export function Aulas() {
               key={aula.yt}
               className="h-full w-full"
               src={`https://www.youtube-nocookie.com/embed/${aula.yt}`}
-              title={aula.t}
+              title={aula.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               loading="lazy"
@@ -34,14 +36,14 @@ export function Aulas() {
             <p className="font-display text-xs font-extrabold uppercase tracking-wider text-pink">
               ▶ Assistindo · Aula {String(current + 1).padStart(2, "0")}
             </p>
-            <p className="mt-1 text-sm font-semibold text-navy">{aula.t}</p>
+            <p className="mt-1 text-sm font-semibold text-navy">{aula.title}</p>
           </div>
         </div>
 
         <div className="mt-5 max-h-[430px] space-y-2 overflow-y-auto pr-1">
-          {VIDEOS.map((v, i) => (
+          {videos.map((v, i) => (
             <button
-              key={v.yt}
+              key={v.id}
               type="button"
               onClick={() => setCurrent(i)}
               className={`flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors ${
@@ -51,7 +53,7 @@ export function Aulas() {
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-navy font-display text-sm font-extrabold text-primary-foreground">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-sm font-medium text-ink">{v.t}</span>
+              <span className="text-sm font-medium text-ink">{v.title}</span>
             </button>
           ))}
         </div>

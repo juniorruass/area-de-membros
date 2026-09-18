@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { SUPORTE_WHATSAPP, SUPORTE_WHATSAPP_LABEL } from "@/data/suporte";
 
-export function PagamentoNaoIdentificado() {
+export function PagamentoNaoIdentificado({
+  whatsapp,
+  whatsappLabel,
+}: {
+  whatsapp: string;
+  whatsappLabel: string;
+}) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -31,11 +36,11 @@ export function PagamentoNaoIdentificado() {
         </p>
 
         <p className="mt-4 text-sm font-semibold text-navy">
-          📱 Suporte: {SUPORTE_WHATSAPP_LABEL}
+          📱 Suporte: {whatsappLabel}
         </p>
 
         <a
-          href={`https://wa.me/${SUPORTE_WHATSAPP}`}
+          href={`https://wa.me/${whatsapp}`}
           target="_blank"
           rel="noreferrer"
           className="mt-4 block w-full rounded-2xl bg-green px-5 py-4 font-display text-base font-extrabold text-primary-foreground shadow-soft transition-transform active:scale-[0.98]"

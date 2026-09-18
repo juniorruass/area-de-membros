@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { PIX_KEY, PIX_NAME } from "@/data/pix";
 
-export function Pagamento() {
+export function Pagamento({ pixKey, pixName }: { pixKey: string; pixName: string }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(PIX_KEY);
+      await navigator.clipboard.writeText(pixKey);
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     } catch {
@@ -32,7 +31,7 @@ export function Pagamento() {
           <p className="text-sm font-semibold text-muted-foreground">
             Pague <b className="text-pink">APENAS</b> nesta chave PIX:
           </p>
-          <p className="mt-3 break-all font-display text-2xl font-extrabold text-navy">{PIX_KEY}</p>
+          <p className="mt-3 break-all font-display text-2xl font-extrabold text-navy">{pixKey}</p>
           <button
             type="button"
             onClick={copy}
@@ -45,7 +44,7 @@ export function Pagamento() {
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Recebedor do PIX
             </p>
-            <p className="font-display text-base font-extrabold text-navy">{PIX_NAME}</p>
+            <p className="font-display text-base font-extrabold text-navy">{pixName}</p>
             <p className="mt-1 text-xs text-muted-foreground">
               Confira sempre o nome antes de confirmar a transferência.
             </p>

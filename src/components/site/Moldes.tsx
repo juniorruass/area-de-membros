@@ -1,15 +1,15 @@
 import { useMemo, useState } from "react";
-import { MOLDES } from "@/data/moldes";
-import { MATERIAIS } from "@/data/materiais";
+import { materiaisUrl } from "@/lib/storage-url";
+import type { PublicMolde } from "@/api/public-data";
 
 const CATS = ["Todos", "Bolsas e Necessaires", "Bônus"];
 
-export function Moldes() {
+export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
   const [cat, setCat] = useState("Todos");
 
   const list = useMemo(
-    () => MOLDES.filter((m) => (cat === "Todos" ? true : m.cat === cat)),
-    [cat],
+    () => moldes.filter((m) => (cat === "Todos" ? true : m.cat === cat)),
+    [moldes, cat],
   );
 
   return (
@@ -43,23 +43,23 @@ export function Moldes() {
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {list.map((m, i) => {
-            const material = MATERIAIS[m.title];
+          {list.map((m) => {
+            const hasFile = Boolean(m.file_path);
             return (
               <div
-                key={`${m.title}-${i}`}
+                key={m.id}
                 className="relative overflow-hidden rounded-2xl border border-line bg-card text-left shadow-soft"
               >
-                {!material ? (
+                {!hasFile ? (
                   <span className="absolute right-2 top-2 z-10 rounded-full bg-orange px-2 py-0.5 text-[10px] font-bold text-navy">
                     Em breve
                   </span>
                 ) : null}
 
                 <div className="flex h-36 items-center justify-center overflow-hidden bg-surface-alt">
-                  {material ? (
+                  {m.cover_path ? (
                     <img
-                      src={`/materiais/${material.cover}`}
+                      src={materiaisUrl(m.cover_path)}
                       alt={m.title}
                       loading="lazy"
                       className="h-full w-full object-contain"
@@ -74,17 +74,17 @@ export function Moldes() {
                     {m.title}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {material?.kind === "imagem"
+                    {m.kind === "imagem"
                       ? "Imagem"
                       : m.pages
                         ? `PDF · ${m.pages} páginas`
                         : "PDF completo"}
                   </p>
 
-                  {material ? (
+                  {m.file_path ? (
                     <div className="mt-3 grid grid-cols-2 gap-1.5">
                       <a
-                        href={`/materiais/${material.file}`}
+                        href={materiaisUrl(m.file_path)}
                         target="_blank"
                         rel="noreferrer"
                         className="rounded-xl border border-line bg-surface-alt py-2 text-center text-xs font-bold text-navy"
@@ -92,7 +92,7 @@ export function Moldes() {
                         👁 Ver
                       </a>
                       <a
-                        href={`/materiais/${material.file}`}
+                        href={materiaisUrl(m.file_path)}
                         download
                         className="rounded-xl bg-pink py-2 text-center text-xs font-bold text-navy"
                       >

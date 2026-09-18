@@ -1,8 +1,6 @@
-import { getCurrentWinner } from "@/data/sorteio";
+type Winner = { name: string; city: string; prize: string };
 
-export function Sorteio() {
-  const winner = getCurrentWinner();
-
+export function Sorteio({ winner }: { winner: Winner | null }) {
   return (
     <section id="sorteio" className="bg-navy px-5 py-12 text-center">
       <div className="mx-auto max-w-[720px]">
@@ -37,14 +35,16 @@ export function Sorteio() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-3xl border-2 border-pink bg-pink-soft p-8 text-center shadow-pop">
-          <span className="pill bg-orange text-navy">🏆 Última sortuda</span>
-          <p className="mt-4 font-display text-2xl font-black text-navy">{winner.name}</p>
-          <p className="mt-1 text-sm text-muted-foreground">📍 {winner.city}</p>
-          <p className="mx-auto mt-3 max-w-[420px] text-base font-semibold text-ink">
-            Ganhou {winner.prize}! 💖
-          </p>
-        </div>
+        {winner ? (
+          <div className="mt-4 rounded-3xl border-2 border-pink bg-pink-soft p-8 text-center shadow-pop">
+            <span className="pill bg-orange text-navy">🏆 Última sortuda</span>
+            <p className="mt-4 font-display text-2xl font-black text-navy">{winner.name}</p>
+            <p className="mt-1 text-sm text-muted-foreground">📍 {winner.city}</p>
+            <p className="mx-auto mt-3 max-w-[420px] text-base font-semibold text-ink">
+              Ganhou {winner.prize}! 💖
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   );
