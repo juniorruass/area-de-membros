@@ -4,7 +4,7 @@ export const MODULOS: Modulo[] = [
   {
     n: 1,
     title: "Escolha seus primeiros modelos",
-    text: "Comece com 3 a 5 modelos simples e de boa saída (necessaire, ecobag, transversal). Domine esses antes de ampliar o catálogo.",
+    text: "Comece com 3 a 5 modelos simples e de boa saída (amigurumi pequeno, touca, porta-treco). Domine esses antes de ampliar o catálogo.",
   },
   {
     n: 2,
@@ -14,7 +14,7 @@ export const MODULOS: Modulo[] = [
   {
     n: 3,
     title: "Calcule o custo de cada peça",
-    text: "Use a calculadora de Custo de Produção. Inclua tecido, aviamentos, embalagem e o valor da sua hora.",
+    text: "Use a calculadora de Custo de Produção. Inclua linha, enchimento, aviamentos e o valor da sua hora.",
   },
   {
     n: 4,
@@ -44,22 +44,22 @@ export const MODULOS: Modulo[] = [
   {
     n: 9,
     title: "Use os status e o Instagram",
-    text: "Poste peças prontas, processo de costura e depoimentos. Constância vale mais que perfeição.",
+    text: "Poste peças prontas, o processo de crochetar e depoimentos. Constância vale mais que perfeição.",
   },
   {
     n: 10,
     title: "Aprenda a responder o “quanto custa?”",
-    text: "Responda o preço com o valor da peça e um benefício: material, acabamento e garantia de reparo.",
+    text: "Responda o preço com o valor da peça e um benefício: fio usado, acabamento e garantia de reparo.",
   },
   {
     n: 11,
     title: "Trabalhe com encomendas",
-    text: "Peça 50% de entrada, defina prazo e confirme cor e modelo por escrito antes de cortar.",
+    text: "Peça 50% de entrada, defina prazo e confirme cor e modelo por escrito antes de começar.",
   },
   {
     n: 12,
     title: "Crie kits e combos",
-    text: "Bolsa + necessaire, ou necessaire + porta-moedas. Combos aumentam o valor de cada venda.",
+    text: "Amigurumi + chaveiro, ou touca + sapatinho combinando. Combos aumentam o valor de cada venda.",
   },
   {
     n: 13,
@@ -89,7 +89,7 @@ export const MODULOS: Modulo[] = [
   {
     n: 18,
     title: "Organize sua produção",
-    text: "Corte em lotes, separe kits por modelo e reserve dias fixos para costurar e para atender clientes.",
+    text: "Separe lotes por modelo, organize seu estoque de linhas por cor e reserve dias fixos para crochetar e para atender clientes.",
   },
   {
     n: 19,

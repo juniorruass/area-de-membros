@@ -32,7 +32,7 @@ export function PagamentoNaoIdentificado({
 
         <p className="mt-4 text-sm text-ink">
           Regularize seu pagamento para manter o acesso ao site com{" "}
-          <b className="text-navy">+200 moldes</b>.
+          <b className="text-navy">todas as receitas e gráficos</b>.
         </p>
 
         <p className="mt-4 text-sm font-semibold text-navy">

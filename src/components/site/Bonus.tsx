@@ -48,7 +48,7 @@ export function Bonus() {
                   Lista de Fornecedores
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Onde comprar ferragens, zíperes, alças e forros com preço baixo. Toque para abrir 👇
+                  Onde comprar linhas, agulhas e aviamentos com preço baixo. Toque para abrir 👇
                 </p>
               </div>
             </button>
@@ -78,7 +78,7 @@ export function Bonus() {
               <div>
                 <p className="font-display text-base font-extrabold text-navy">Fotos que Vendem</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Como fotografar sua bolsa com o celular para atrair encomendas. Toque para abrir o
+                  Como fotografar sua peça com o celular para atrair encomendas. Toque para abrir o
                   guia 👇
                 </p>
               </div>
@@ -102,12 +102,12 @@ export function Bonus() {
                 </div>
                 <p className="mt-4 rounded-2xl bg-destructive/5 px-4 py-3 text-sm text-ink">
                   ❌ <b>O que evitar:</b> fotos escuras, ambientes bagunçados, excesso de objetos,
-                  filtros exagerados, imagens tremidas, bolsa amassada, peça cortada e flash muito
+                  filtros exagerados, imagens tremidas, peça amassada, peça cortada e flash muito
                   forte.
                 </p>
                 <p className="mt-3 rounded-2xl bg-pink-soft px-4 py-3 text-sm italic text-pink-strong">
-                  💡 “Se eu estivesse procurando uma bolsa pela internet, essa foto me faria parar
-                  para olhar?”
+                  💡 “Se eu estivesse procurando uma peça de crochê pela internet, essa foto me faria
+                  parar para olhar?”
                 </p>
               </div>
             ) : null}

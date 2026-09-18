@@ -4,16 +4,16 @@ import { MODULOS } from "@/data/guia";
 export const Route = createFileRoute("/guia-de-vendas")({
   head: () => ({
     meta: [
-      { title: "Guia Completo de Vendas — Bolsas & Necessaires" },
+      { title: "Guia Completo de Vendas — Crochê" },
       {
         name: "description",
         content:
-          "20 módulos passo a passo para vender bolsas e necessaires em jeans: da primeira venda em casa às vendas para todo o Brasil.",
+          "20 módulos passo a passo para vender suas peças em crochê: da primeira venda em casa às vendas para todo o Brasil.",
       },
-      { property: "og:title", content: "Guia Completo de Vendas — Bolsas & Necessaires" },
+      { property: "og:title", content: "Guia Completo de Vendas — Crochê" },
       {
         property: "og:description",
-        content: "20 módulos passo a passo para vender suas bolsas e necessaires com lucro.",
+        content: "20 módulos passo a passo para vender suas peças em crochê com lucro.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },

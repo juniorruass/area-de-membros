@@ -1,8 +1,8 @@
 import { Hearts } from "./Hearts";
 
 const HIGHLIGHTS = [
-  { n: "+200 Moldes", d: "Completos, com medidas." },
-  { n: "55 Videoaulas", d: "Passo a passo." },
+  { n: "+140 Receitas", d: "Completas, passo a passo." },
+  { n: "Videoaulas", d: "Passo a passo." },
   { n: "Precificação", d: "Saiba quanto cobrar." },
   { n: "Custo de Produção", d: "Calcule e lucre mais." },
 ];
@@ -17,10 +17,10 @@ export function Hero() {
       <div className="relative z-10 mx-auto max-w-[720px]">
         <div className="mb-5">
           <p className="font-display text-xl font-black uppercase tracking-wide text-navy">
-            Professora Graziele Sampaio
+            Rosenilda
           </p>
           <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-pink">
-            Academia de Bolsas
+            Crochê da Rosenilda
           </p>
         </div>
 
@@ -28,11 +28,11 @@ export function Hero() {
         <p className="mt-4 font-display text-lg font-extrabold text-pink">Bem-vinda!</p>
         <h1 className="mt-2 text-[clamp(32px,8vw,56px)] font-black uppercase leading-[0.98]">
           Curso completo
-          <span className="block text-pink">Bolsas &amp; Necessaires</span>
+          <span className="block text-pink">de Crochê</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-muted-foreground">
-          Curso profissional de bolsas e necessaires em jeans, com <b>200 moldes completos</b>,
-          videoaulas e ferramentas exclusivas para apoiar a sua produção. 🧵✂️
+          Curso profissional de crochê, com <b>receitas e gráficos completos</b>, videoaulas e
+          ferramentas exclusivas para apoiar a sua produção. 🧶✂️
         </p>
         <p className="mt-4 rounded-2xl bg-green-soft px-4 py-3 font-semibold text-green">
           🎓 Formação completa — 240 horas de curso profissional

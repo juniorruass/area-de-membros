@@ -33,3 +33,7 @@ dist-ssr
 
 .vercel
 .env*
+
+# Fonte bruta de materiais (moldes/croche) — tudo migrado pro Supabase Storage,
+# nao precisa ir pro git (alguns zips passam do limite de tamanho do GitHub).
+public/materiais/

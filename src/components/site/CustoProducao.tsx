@@ -3,7 +3,7 @@ import { useState } from "react";
 const BRL = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2 });
 
-const DEFAULTS = ["Tecido / jeans", "Ferragens", "Zíper", "Alça", "Forro", "Linha e aviamentos"];
+const DEFAULTS = ["Linha (novelos)", "Enchimento", "Agulha de crochê", "Olhinhos e botões", "Aviamentos"];
 
 type Mat = { name: string; val: string };
 

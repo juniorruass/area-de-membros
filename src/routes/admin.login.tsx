@@ -37,7 +37,7 @@ function LoginPage() {
       >
         <p className="font-display text-xl font-black uppercase text-navy">Admin</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          Academia de Bolsas Graziele Sampaio
+          Crochê da Rosenilda
         </p>
 
         <label className="mt-6 block text-sm font-bold text-navy">Senha</label>

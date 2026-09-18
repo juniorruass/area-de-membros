@@ -14,7 +14,7 @@ export function Sorteio({ winner }: { winner: Winner | null }) {
           ganhadora.
         </p>
         <p className="mt-4 font-display font-extrabold text-orange">
-          🍀 A próxima sortuda pode ser VOCÊ! 🧵✨
+          🍀 A próxima sortuda pode ser VOCÊ! 🧶✨
         </p>
 
         <div className="mt-7 rounded-3xl bg-card p-6 text-left shadow-pop">
@@ -22,7 +22,7 @@ export function Sorteio({ winner }: { winner: Winner | null }) {
             🎁 O prêmio
           </p>
           <p className="mt-2 text-lg font-bold text-navy">
-            Máquina de costura semiprofissional + Kit de Aviamentos + R$ 500 em dinheiro
+            Kit completo de linhas e agulhas de crochê + R$ 500 em dinheiro
           </p>
           <p className="mt-1 text-sm text-muted-foreground">para investir no seu ateliê.</p>
           <div className="mt-5 grid gap-2 text-sm">

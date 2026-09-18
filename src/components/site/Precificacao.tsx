@@ -30,7 +30,7 @@ export function Precificacao({ custo }: { custo: number }) {
             Quanto <span className="text-pink">Cobrar</span>
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Descubra o preço de venda ideal da sua bolsa e quanto sobra de lucro.
+            Descubra o preço de venda ideal da sua peça e quanto sobra de lucro.
           </p>
         </div>
 

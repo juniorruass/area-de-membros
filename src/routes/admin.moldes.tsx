@@ -19,7 +19,14 @@ export const Route = createFileRoute("/admin/moldes")({
   component: MoldesAdmin,
 });
 
-const CATS = ["Bolsas e Necessaires", "Bônus"] as const;
+const CATS = [
+  "Bolsas e Mochilas",
+  "Roupas Infantis",
+  "Almofadinhas",
+  "Tapetes",
+  "Amigurumis",
+  "Bônus",
+] as const;
 
 function slugify(title: string) {
   return title
@@ -257,7 +264,7 @@ function MoldesAdmin() {
                     className="h-full w-full object-contain"
                   />
                 ) : (
-                  <span className="text-3xl">👜</span>
+                  <span className="text-3xl">🧶</span>
                 )}
               </div>
               <div className="p-3">

@@ -2,10 +2,10 @@ import { useMemo, useState } from "react";
 import { materiaisUrl } from "@/lib/storage-url";
 import type { PublicMolde } from "@/api/public-data";
 
-const CATS = ["Todos", "Bolsas e Necessaires", "Bônus"];
-
 export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
   const [cat, setCat] = useState("Todos");
+
+  const cats = useMemo(() => ["Todos", ...Array.from(new Set(moldes.map((m) => m.cat)))], [moldes]);
 
   const list = useMemo(
     () => moldes.filter((m) => (cat === "Todos" ? true : m.cat === cat)),
@@ -26,7 +26,7 @@ export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
         </div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {CATS.map((c) => (
+          {cats.map((c) => (
             <button
               key={c}
               type="button"
@@ -65,7 +65,7 @@ export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
                       className="h-full w-full object-contain"
                     />
                   ) : (
-                    <span className="font-display text-3xl">👜</span>
+                    <span className="font-display text-3xl">🧶</span>
                   )}
                 </div>
 

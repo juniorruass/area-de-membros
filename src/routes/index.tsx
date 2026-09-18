@@ -18,20 +18,20 @@ export const Route = createFileRoute("/")({
   loader: () => getPublicData(),
   head: () => ({
     meta: [
-      { title: "Academia de Bolsas Graziele Sampaio — Curso Completo Bolsas & Necessaires em Jeans" },
+      { title: "Crochê da Rosenilda — Curso Completo de Crochê" },
       {
         name: "description",
         content:
-          "200 moldes profissionais de bolsas e necessaires em jeans, com videoaulas, passo a passo, medidas e calculadoras de preço e custo.",
+          "Receitas e gráficos profissionais de crochê, com videoaulas, passo a passo e calculadoras de preço e custo.",
       },
       {
         property: "og:title",
-        content: "Academia de Bolsas Graziele Sampaio — Curso Completo Bolsas & Necessaires em Jeans",
+        content: "Crochê da Rosenilda — Curso Completo de Crochê",
       },
       {
         property: "og:description",
         content:
-          "+200 moldes com medidas, 55 videoaulas e ferramentas de precificação para lucrar com bolsas em jeans.",
+          "Receitas e gráficos completos, videoaulas e ferramentas de precificação para lucrar com crochê.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -49,7 +49,7 @@ function Index() {
       {settings.banner_url ? (
         <img
           src={siteUrl(settings.banner_url)}
-          alt="Curso Completo Bolsas & Necessaires — mais de 200 moldes completos e videoaulas"
+          alt="Curso Completo de Crochê — receitas, gráficos completos e videoaulas"
           className="mx-auto hidden w-full max-w-[720px] sm:block"
         />
       ) : null}
@@ -64,10 +64,10 @@ function Index() {
 
       <footer className="bg-navy-deep px-5 py-10 text-center">
         <p className="font-display text-lg font-extrabold text-primary-foreground">
-          Academia de Bolsas Graziele Sampaio
+          Crochê da Rosenilda
         </p>
         <p className="mt-1 text-sm text-primary-foreground/70">
-          Curso Completo — Bolsas &amp; Necessaires
+          Curso Completo de Crochê
         </p>
         <p className="mt-2 text-sm text-primary-foreground/70">
           © {new Date().getFullYear()} — Todos os direitos reservados.

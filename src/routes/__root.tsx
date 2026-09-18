@@ -77,11 +77,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Academia de Bolsas Graziele Sampaio — Curso Completo Bolsas & Necessaires" },
+      { title: "Crochê da Rosenilda — Curso Completo de Crochê" },
       {
         name: "description",
         content:
-          "Moldes, videoaulas e ferramentas para produzir e vender bolsas e necessaires em jeans.",
+          "Receitas, gráficos, videoaulas e ferramentas para produzir e vender peças em crochê.",
       },
     ],
     links: [

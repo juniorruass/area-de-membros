@@ -1,6 +1,6 @@
 const ITEMS = [
   { id: "inicio", label: "Início", icon: "🏠" },
-  { id: "moldes", label: "Moldes", icon: "👜" },
+  { id: "moldes", label: "Moldes", icon: "🧶" },
   { id: "aulas", label: "Vídeos", icon: "▶" },
   { id: "preco", label: "Preço", icon: "💰" },
   { id: "custo", label: "Custo", icon: "🧾" },
