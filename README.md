@@ -1,29 +1,30 @@
-# Welcome to your Lovable project
+# Crochê da Rosenilda
 
-This project was built with [Lovable](https://lovable.dev).
+Área de membros do curso de crochê, com moldes/receitas, videoaulas,
+sorteio, PIX e um painel de admin pra gerenciar todo o conteúdo sem
+precisar tocar em código.
 
-## Build with Lovable
-
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
-
-## Built with
+## Stack
 
 - TanStack Start
 - TypeScript
 - React
 - Tailwind CSS
+- Supabase (Postgres + Storage)
+
+## Desenvolvimento
+
+```sh
+npm i
+npm run dev
+```
+
+Copie `.env.example` (se existir) ou configure `.env.local` com as
+variáveis `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`,
+`SESSION_SECRET` e `VITE_SUPABASE_URL` antes de rodar.
+
+## Admin
+
+Acesse `/admin/login` com a senha configurada em `ADMIN_PASSWORD` pra
+gerenciar moldes, vídeos, sorteio e configurações (PIX, WhatsApp,
+banner) direto pelo site.
