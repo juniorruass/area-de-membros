@@ -1,9 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { materiaisUrl } from "@/lib/storage-url";
 import type { PublicMolde } from "@/api/public-data";
 
+const PAGE_SIZE = 9;
+
 export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
   const [cat, setCat] = useState("Todos");
+  const [visible, setVisible] = useState(PAGE_SIZE);
 
   const cats = useMemo(() => ["Todos", ...Array.from(new Set(moldes.map((m) => m.cat)))], [moldes]);
 
@@ -11,6 +14,13 @@ export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
     () => moldes.filter((m) => (cat === "Todos" ? true : m.cat === cat)),
     [moldes, cat],
   );
+
+  useEffect(() => {
+    setVisible(PAGE_SIZE);
+  }, [cat]);
+
+  const shown = list.slice(0, visible);
+  const hasMore = visible < list.length;
 
   return (
     <section id="moldes" className="bg-denim-soft px-5 py-12">
@@ -43,7 +53,7 @@ export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {list.map((m) => {
+          {shown.map((m) => {
             const hasFile = Boolean(m.file_path);
             return (
               <div
@@ -109,6 +119,16 @@ export function Moldes({ moldes }: { moldes: PublicMolde[] }) {
             );
           })}
         </div>
+
+        {hasMore ? (
+          <button
+            type="button"
+            onClick={() => setVisible((v) => v + PAGE_SIZE)}
+            className="mx-auto mt-5 block rounded-2xl border-2 border-navy px-6 py-3 font-display text-sm font-extrabold text-navy"
+          >
+            Ver mais ({list.length - visible})
+          </button>
+        ) : null}
       </div>
     </section>
   );

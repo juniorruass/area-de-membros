@@ -56,8 +56,8 @@ function Index() {
       <Hero />
       <Sorteio winner={winner} />
       <Pagamento pixKey={settings.pix_key} pixName={settings.pix_name} />
-      <Moldes moldes={moldes} />
       <Aulas videos={videos} />
+      <Moldes moldes={moldes} />
       <Precificacao custo={custo} />
       <CustoProducao onUseCost={setCusto} />
       <Bonus />

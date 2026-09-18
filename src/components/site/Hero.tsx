@@ -55,6 +55,12 @@ export function Hero() {
 
         <div className="mt-7 space-y-3">
           <a
+            href="#aulas"
+            className="block rounded-2xl bg-navy px-5 py-4 font-display text-base font-extrabold text-primary-foreground"
+          >
+            ▶ Veja as videoaulas
+          </a>
+          <a
             href="#bonus"
             className="block rounded-2xl border-2 border-navy px-5 py-4 font-display text-base font-extrabold text-navy"
           >
