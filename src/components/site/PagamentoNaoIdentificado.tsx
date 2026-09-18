@@ -39,10 +39,6 @@ export function PagamentoNaoIdentificado({
           Pagamento não identificado
         </h3>
 
-        <p className="mt-4 rounded-full bg-destructive/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-destructive">
-          🔴 Seu acesso poderá ser bloqueado
-        </p>
-
         <p className="mt-4 text-sm text-ink">
           Regularize seu pagamento para manter o acesso ao site com{" "}
           <b className="text-navy">todas as receitas e gráficos</b>.
@@ -51,7 +47,7 @@ export function PagamentoNaoIdentificado({
         <button
           type="button"
           onClick={copy}
-          className="mt-4 w-full rounded-2xl bg-pink px-5 py-3 font-display text-sm font-extrabold text-navy shadow-soft transition-transform active:scale-[0.98]"
+          className="mt-4 w-full rounded-2xl bg-green px-5 py-3 font-display text-sm font-extrabold text-primary-foreground shadow-soft transition-transform active:scale-[0.98]"
         >
           {copied ? "✓ Copiado!" : "➜ Copiar chave PIX"}
         </button>
