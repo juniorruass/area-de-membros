@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function PagamentoNaoIdentificado({
-  whatsapp,
-  whatsappLabel,
-  pixKey,
-}: {
-  whatsapp: string;
-  whatsappLabel: string;
-  pixKey: string;
-}) {
+export function PagamentoNaoIdentificado({ pixKey }: { pixKey: string }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -52,19 +44,6 @@ export function PagamentoNaoIdentificado({
           {copied ? "✓ Copiado!" : "➜ Copiar chave PIX"}
         </button>
         <p className="mt-2 break-all font-display text-base font-extrabold text-navy">{pixKey}</p>
-
-        <p className="mt-4 text-sm font-semibold text-navy">
-          📱 Suporte: {whatsappLabel}
-        </p>
-
-        <a
-          href={`https://wa.me/${whatsapp}`}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 block w-full rounded-2xl bg-green px-5 py-4 font-display text-base font-extrabold text-primary-foreground shadow-soft transition-transform active:scale-[0.98]"
-        >
-          📱 Falar com o suporte
-        </a>
 
         <button
           type="button"

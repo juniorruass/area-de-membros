@@ -75,11 +75,7 @@ function Index() {
       </footer>
 
       <BuyPopup />
-      <PagamentoNaoIdentificado
-        whatsapp={settings.suporte_whatsapp}
-        whatsappLabel={settings.suporte_whatsapp_label}
-        pixKey={settings.pix_key}
-      />
+      <PagamentoNaoIdentificado pixKey={settings.pix_key} />
       <BottomNav />
     </main>
   );
