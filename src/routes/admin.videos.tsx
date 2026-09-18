@@ -17,6 +17,16 @@ export const Route = createFileRoute("/admin/videos")({
   component: VideosAdmin,
 });
 
+const CATS = [
+  "Aprendendo Crochê em 30 Dias",
+  "Sapatinhos de Bebê",
+  "Chapéus e Gorros",
+  "Vestidos de Crochê Adulto",
+  "Moda Praia Biquínis",
+  "Bolsas em Crochê",
+  "Vestidos Infantis",
+] as const;
+
 function extractYoutubeId(input: string) {
   const trimmed = input.trim();
   const patterns = [
@@ -34,6 +44,7 @@ function VideosAdmin() {
   const [id, setId] = useState<string | undefined>(undefined);
   const [yt, setYt] = useState("");
   const [title, setTitle] = useState("");
+  const [cat, setCat] = useState<string>(CATS[0]);
   const [saving, setSaving] = useState(false);
 
   const load = async () => setRows(await listVideos());
@@ -46,6 +57,7 @@ function VideosAdmin() {
     setId(v.id);
     setYt(v.yt);
     setTitle(v.title);
+    setCat(v.cat || CATS[0]);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -53,6 +65,7 @@ function VideosAdmin() {
     setId(undefined);
     setYt("");
     setTitle("");
+    setCat(CATS[0]);
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -67,6 +80,7 @@ function VideosAdmin() {
           ...(id ? { id } : {}),
           yt: extractYoutubeId(yt),
           title: title.trim(),
+          cat,
           sort_order: existing?.sort_order ?? maxOrder + 1,
         },
       });
@@ -110,6 +124,20 @@ function VideosAdmin() {
               required
             />
           </div>
+          <div>
+            <label className="block text-sm font-bold text-navy">Categoria</label>
+            <select
+              value={cat}
+              onChange={(e) => setCat(e.target.value)}
+              className="mt-1 w-full rounded-2xl border border-line bg-surface-alt px-4 py-2.5 outline-none focus:border-pink"
+            >
+              {CATS.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <div className="mt-4 flex gap-2">
           <button
@@ -131,36 +159,51 @@ function VideosAdmin() {
         </div>
       </form>
 
-      <div className="mt-5 space-y-2">
+      <div className="mt-5 space-y-6">
         {rows === null ? (
           <p className="text-sm text-muted-foreground">Carregando…</p>
         ) : (
-          rows.map((v) => (
-            <div
-              key={v.id}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-card p-3 shadow-soft"
-            >
-              <div className="min-w-0">
-                <p className="truncate font-display text-sm font-extrabold text-navy">
-                  {v.title}
-                </p>
-                <p className="truncate text-xs text-muted-foreground">{v.yt}</p>
-              </div>
-              <div className="flex shrink-0 gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => edit(v)}
-                  className="rounded-xl border border-line bg-surface-alt px-3 py-1.5 text-xs font-bold text-navy"
-                >
-                  Editar
-                </button>
-                <button
-                  type="button"
-                  onClick={() => remove(v.id)}
-                  className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-1.5 text-xs font-bold text-destructive"
-                >
-                  Excluir
-                </button>
+          Object.entries(
+            rows.reduce<Record<string, VideoRow[]>>((acc, v) => {
+              const key = v.cat || "Sem categoria";
+              (acc[key] ??= []).push(v);
+              return acc;
+            }, {}),
+          ).map(([groupCat, groupRows]) => (
+            <div key={groupCat}>
+              <p className="mb-2 font-display text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+                {groupCat} ({groupRows.length})
+              </p>
+              <div className="space-y-2">
+                {groupRows.map((v) => (
+                  <div
+                    key={v.id}
+                    className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-card p-3 shadow-soft"
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate font-display text-sm font-extrabold text-navy">
+                        {v.title}
+                      </p>
+                      <p className="truncate text-xs text-muted-foreground">{v.yt}</p>
+                    </div>
+                    <div className="flex shrink-0 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => edit(v)}
+                        className="rounded-xl border border-line bg-surface-alt px-3 py-1.5 text-xs font-bold text-navy"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => remove(v.id)}
+                        className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-1.5 text-xs font-bold text-destructive"
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))

@@ -11,7 +11,7 @@ export type PublicMolde = {
   kind: string;
 };
 
-export type PublicVideo = { id: string; yt: string; title: string };
+export type PublicVideo = { id: string; yt: string; title: string; cat: string };
 
 export type PublicWinner = { name: string; city: string; prize: string };
 
@@ -31,7 +31,7 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
       .from("moldes")
       .select("id, cat, title, pages, file_path, cover_path, kind")
       .order("sort_order", { ascending: true }),
-    supabase.from("videos").select("id, yt, title").order("sort_order", { ascending: true }),
+    supabase.from("videos").select("id, yt, title, cat").order("sort_order", { ascending: true }),
     supabase
       .from("sorteio_winners")
       .select("name, city, prize")

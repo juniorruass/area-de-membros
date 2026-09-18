@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { PublicVideo } from "@/api/public-data";
 
 export function Aulas({ videos }: { videos: PublicVideo[] }) {
+  const cats = useMemo(() => ["Todos", ...Array.from(new Set(videos.map((v) => v.cat)))], [videos]);
+  const [cat, setCat] = useState("Todos");
   const [current, setCurrent] = useState(0);
-  const aula = videos[current] ?? videos[0];
+
+  const list = useMemo(
+    () => videos.filter((v) => (cat === "Todos" ? true : v.cat === cat)),
+    [videos, cat],
+  );
+
+  useEffect(() => {
+    setCurrent(0);
+  }, [cat]);
+
+  const aula = list[current] ?? list[0];
 
   if (!aula) return null;
 
@@ -18,6 +30,23 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
           <p className="mt-3 text-muted-foreground">
             Toque em uma aula para assistir aqui mesmo, no seu ritmo.
           </p>
+        </div>
+
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          {cats.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCat(c)}
+              className={`pill border transition-colors ${
+                cat === c
+                  ? "border-navy bg-navy text-primary-foreground"
+                  : "border-line bg-card text-navy"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
         </div>
 
         <div className="mt-6 overflow-hidden rounded-3xl border border-line bg-card shadow-soft">
@@ -41,7 +70,7 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
         </div>
 
         <div className="mt-5 max-h-[430px] space-y-2 overflow-y-auto pr-1">
-          {videos.map((v, i) => (
+          {list.map((v, i) => (
             <button
               key={v.id}
               type="button"

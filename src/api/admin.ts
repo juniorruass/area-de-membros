@@ -95,7 +95,7 @@ export const deleteMolde = createServerFn({ method: "POST" })
 
 // ---------- Videos ----------
 
-export type VideoRow = { id: string; yt: string; title: string; sort_order: number };
+export type VideoRow = { id: string; yt: string; title: string; cat: string; sort_order: number };
 
 export const listVideos = createServerFn({ method: "GET" }).handler(async () => {
   requireAdmin(await isAdminAuthenticated());
@@ -108,7 +108,9 @@ export const listVideos = createServerFn({ method: "GET" }).handler(async () => 
 });
 
 export const upsertVideo = createServerFn({ method: "POST" })
-  .validator((data: { id?: string; yt: string; title: string; sort_order: number }) => data)
+  .validator(
+    (data: { id?: string; yt: string; title: string; cat: string; sort_order: number }) => data,
+  )
   .handler(async ({ data }) => {
     requireAdmin(await isAdminAuthenticated());
     const { id, ...rest } = data;
