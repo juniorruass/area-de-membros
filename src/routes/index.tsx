@@ -78,6 +78,7 @@ function Index() {
       <PagamentoNaoIdentificado
         whatsapp={settings.suporte_whatsapp}
         whatsappLabel={settings.suporte_whatsapp_label}
+        pixKey={settings.pix_key}
       />
       <BottomNav />
     </main>

@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 export function PagamentoNaoIdentificado({
   whatsapp,
   whatsappLabel,
+  pixKey,
 }: {
   whatsapp: string;
   whatsappLabel: string;
+  pixKey: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 20000);
@@ -15,6 +18,16 @@ export function PagamentoNaoIdentificado({
   }, []);
 
   if (!open) return null;
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(pixKey);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-navy-deep/70 px-5">
@@ -34,6 +47,15 @@ export function PagamentoNaoIdentificado({
           Regularize seu pagamento para manter o acesso ao site com{" "}
           <b className="text-navy">todas as receitas e gráficos</b>.
         </p>
+
+        <button
+          type="button"
+          onClick={copy}
+          className="mt-4 w-full rounded-2xl bg-pink px-5 py-3 font-display text-sm font-extrabold text-navy shadow-soft transition-transform active:scale-[0.98]"
+        >
+          {copied ? "✓ Copiado!" : "➜ Copiar chave PIX"}
+        </button>
+        <p className="mt-2 break-all font-display text-base font-extrabold text-navy">{pixKey}</p>
 
         <p className="mt-4 text-sm font-semibold text-navy">
           📱 Suporte: {whatsappLabel}
