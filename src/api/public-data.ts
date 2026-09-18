@@ -20,6 +20,7 @@ export type PublicSettings = {
   pix_name: string;
   suporte_whatsapp: string;
   suporte_whatsapp_label: string;
+  whatsapp_group_url: string;
   banner_url: string;
 };
 
@@ -60,6 +61,7 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
       pix_name: settingsMap["pix_name"] ?? "",
       suporte_whatsapp: settingsMap["suporte_whatsapp"] ?? "",
       suporte_whatsapp_label: settingsMap["suporte_whatsapp_label"] ?? "",
+      whatsapp_group_url: settingsMap["whatsapp_group_url"] ?? "",
       banner_url: settingsMap["banner_url"] ?? "",
     } satisfies PublicSettings,
     winner,

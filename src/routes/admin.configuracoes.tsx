@@ -18,6 +18,7 @@ function ConfiguracoesAdmin() {
   const [pixName, setPixName] = useState("");
   const [whats, setWhats] = useState("");
   const [whatsLabel, setWhatsLabel] = useState("");
+  const [groupUrl, setGroupUrl] = useState("");
   const [bannerUrl, setBannerUrl] = useState("");
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
@@ -29,6 +30,7 @@ function ConfiguracoesAdmin() {
       setPixName(s["pix_name"] ?? "");
       setWhats(s["suporte_whatsapp"] ?? "");
       setWhatsLabel(s["suporte_whatsapp_label"] ?? "");
+      setGroupUrl(s["whatsapp_group_url"] ?? "");
       setBannerUrl(s["banner_url"] ?? "");
       setLoaded(true);
     });
@@ -56,6 +58,7 @@ function ConfiguracoesAdmin() {
           pix_name: pixName.trim(),
           suporte_whatsapp: whats.trim(),
           suporte_whatsapp_label: whatsLabel.trim(),
+          whatsapp_group_url: groupUrl.trim(),
           banner_url: banner,
         },
       });
@@ -123,6 +126,15 @@ function ConfiguracoesAdmin() {
                 className="mt-1 w-full rounded-2xl border border-line bg-surface-alt px-4 py-2.5 outline-none focus:border-pink"
               />
             </div>
+          </div>
+          <div className="mt-3">
+            <label className="block text-sm font-bold text-navy">Link do grupo do WhatsApp</label>
+            <input
+              value={groupUrl}
+              onChange={(e) => setGroupUrl(e.target.value)}
+              placeholder="https://chat.whatsapp.com/..."
+              className="mt-1 w-full rounded-2xl border border-line bg-surface-alt px-4 py-2.5 outline-none focus:border-pink"
+            />
           </div>
         </div>
 
