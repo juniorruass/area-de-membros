@@ -1,11 +1,14 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { ReorderHandle } from "@/components/admin/ReorderHandle";
 import { materiaisUrl } from "@/lib/storage-url";
+import { moveId } from "@/lib/reorder";
 import {
   checkAdminAuth,
   deleteMolde,
   listMoldes,
+  reorderItems,
   uploadFile,
   upsertMolde,
   type MoldeRow,
@@ -52,6 +55,7 @@ function MoldesAdmin() {
   const [coverInput, setCoverInput] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dragId, setDragId] = useState<string | null>(null);
 
   const load = async () => setRows(await listMoldes());
 
@@ -139,6 +143,17 @@ function MoldesAdmin() {
   const remove = async (id: string) => {
     if (!confirm("Excluir este molde?")) return;
     await deleteMolde({ data: { id } });
+    await load();
+  };
+
+  const reorder = async (groupRows: MoldeRow[], from: number, to: number) => {
+    if (to < 0 || to >= groupRows.length || from === to) return;
+    const ids = moveId(
+      groupRows.map((r) => r.id),
+      from,
+      to,
+    );
+    await reorderItems({ data: { table: "moldes", ids } });
     await load();
   };
 
@@ -247,50 +262,85 @@ function MoldesAdmin() {
         </div>
       </form>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="mt-6 space-y-8">
         {rows === null ? (
           <p className="text-sm text-muted-foreground">Carregando…</p>
         ) : (
-          rows.map((m) => (
-            <div
-              key={m.id}
-              className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft"
-            >
-              <div className="flex h-28 items-center justify-center bg-surface-alt">
-                {m.cover_path ? (
-                  <img
-                    src={materiaisUrl(m.cover_path)}
-                    alt={m.title}
-                    className="h-full w-full object-contain"
-                  />
-                ) : (
-                  <span className="text-3xl">🧶</span>
-                )}
-              </div>
-              <div className="p-3">
-                <p className="font-display text-sm font-extrabold leading-tight text-navy">
-                  {m.title}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {m.cat}
-                  {m.pages ? ` · ${m.pages}p` : ""}
-                </p>
-                <div className="mt-2 grid grid-cols-2 gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => edit(m)}
-                    className="rounded-xl border border-line bg-surface-alt py-1.5 text-xs font-bold text-navy"
+          Object.entries(
+            rows.reduce<Record<string, MoldeRow[]>>((acc, m) => {
+              const key = m.cat || "Sem categoria";
+              (acc[key] ??= []).push(m);
+              return acc;
+            }, {}),
+          ).map(([groupCat, groupRows]) => (
+            <div key={groupCat}>
+              <p className="mb-2 font-display text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+                {groupCat} ({groupRows.length})
+              </p>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {groupRows.map((m, i) => (
+                  <div
+                    key={m.id}
+                    draggable
+                    onDragStart={() => setDragId(m.id)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => {
+                      if (dragId) {
+                        const from = groupRows.findIndex((r) => r.id === dragId);
+                        if (from !== -1) reorder(groupRows, from, i);
+                      }
+                      setDragId(null);
+                    }}
+                    className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft"
                   >
-                    Editar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => remove(m.id)}
-                    className="rounded-xl border border-destructive/30 bg-destructive/5 py-1.5 text-xs font-bold text-destructive"
-                  >
-                    Excluir
-                  </button>
-                </div>
+                    <div className="flex items-center justify-center border-b border-line bg-surface-alt py-0.5">
+                      <ReorderHandle
+                        vertical={false}
+                        onUp={() => reorder(groupRows, i, i - 1)}
+                        onDown={() => reorder(groupRows, i, i + 1)}
+                        canUp={i > 0}
+                        canDown={i < groupRows.length - 1}
+                        dragProps={{}}
+                      />
+                    </div>
+                    <div className="flex h-28 items-center justify-center bg-surface-alt">
+                      {m.cover_path ? (
+                        <img
+                          src={materiaisUrl(m.cover_path)}
+                          alt={m.title}
+                          className="h-full w-full object-contain"
+                        />
+                      ) : (
+                        <span className="text-3xl">🧶</span>
+                      )}
+                    </div>
+                    <div className="p-3">
+                      <p className="font-display text-sm font-extrabold leading-tight text-navy">
+                        {m.title}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {m.cat}
+                        {m.pages ? ` · ${m.pages}p` : ""}
+                      </p>
+                      <div className="mt-2 grid grid-cols-2 gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => edit(m)}
+                          className="rounded-xl border border-line bg-surface-alt py-1.5 text-xs font-bold text-navy"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => remove(m.id)}
+                          className="rounded-xl border border-destructive/30 bg-destructive/5 py-1.5 text-xs font-bold text-destructive"
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))

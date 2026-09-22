@@ -211,6 +211,40 @@ export const updateSettings = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+// ---------- Reordering ----------
+
+const REORDERABLE_TABLES = ["moldes", "videos", "sorteio_winners"] as const;
+type ReorderTable = (typeof REORDERABLE_TABLES)[number];
+
+// Re-assigns sort_order among exactly the given ids, reusing the set of
+// sort_order values those ids already hold. This reorders them relative to
+// each other without disturbing their position relative to any other rows
+// (e.g. other categories) that share the same sort_order sequence.
+export const reorderItems = createServerFn({ method: "POST" })
+  .validator((data: { table: ReorderTable; ids: string[] }) => data)
+  .handler(async ({ data }) => {
+    requireAdmin(await isAdminAuthenticated());
+    if (!REORDERABLE_TABLES.includes(data.table)) throw new Error("Tabela invalida");
+    const supabase = getSupabaseAdmin();
+
+    const { data: rows, error: selErr } = await supabase
+      .from(data.table)
+      .select("id, sort_order")
+      .in("id", data.ids);
+    if (selErr) throw new Error(selErr.message);
+
+    const orders = (rows as { id: string; sort_order: number }[])
+      .map((r) => r.sort_order)
+      .sort((a, b) => a - b);
+
+    const results = await Promise.all(
+      data.ids.map((id, i) => supabase.from(data.table).update({ sort_order: orders[i] }).eq("id", id)),
+    );
+    const failed = results.find((r) => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
+    return { ok: true };
+  });
+
 // ---------- Storage upload ----------
 
 export const uploadFile = createServerFn({ method: "POST" })

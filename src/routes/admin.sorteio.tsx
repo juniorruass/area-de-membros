@@ -1,10 +1,13 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { ReorderHandle } from "@/components/admin/ReorderHandle";
+import { moveId } from "@/lib/reorder";
 import {
   checkAdminAuth,
   deleteWinner,
   listWinners,
+  reorderItems,
   upsertWinner,
   type WinnerRow,
 } from "@/api/admin";
@@ -24,6 +27,7 @@ function SorteioAdmin() {
   const [city, setCity] = useState("");
   const [prize, setPrize] = useState("");
   const [saving, setSaving] = useState(false);
+  const [dragId, setDragId] = useState<string | null>(null);
 
   const load = async () => setRows(await listWinners());
 
@@ -72,6 +76,19 @@ function SorteioAdmin() {
   const remove = async (rid: string) => {
     if (!confirm("Excluir essa ganhadora?")) return;
     await deleteWinner({ data: { id: rid } });
+    await load();
+  };
+
+  const reorder = async (from: number, to: number) => {
+    if (!rows || to < 0 || to >= rows.length || from === to) return;
+    const ids = moveId(
+      rows.map((r) => r.id),
+      from,
+      to,
+    );
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    setRows(ids.map((id) => byId.get(id)!));
+    await reorderItems({ data: { table: "sorteio_winners", ids } });
     await load();
   };
 
@@ -144,12 +161,29 @@ function SorteioAdmin() {
         {rows === null ? (
           <p className="text-sm text-muted-foreground">Carregando…</p>
         ) : (
-          rows.map((w) => (
+          rows.map((w, i) => (
             <div
               key={w.id}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-card p-3 shadow-soft"
+              draggable
+              onDragStart={() => setDragId(w.id)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                if (dragId) {
+                  const from = rows.findIndex((r) => r.id === dragId);
+                  if (from !== -1) reorder(from, i);
+                }
+                setDragId(null);
+              }}
+              className="flex items-center gap-2 rounded-2xl border border-line bg-card p-3 shadow-soft"
             >
-              <div className="min-w-0">
+              <ReorderHandle
+                onUp={() => reorder(i, i - 1)}
+                onDown={() => reorder(i, i + 1)}
+                canUp={i > 0}
+                canDown={i < rows.length - 1}
+                dragProps={{}}
+              />
+              <div className="min-w-0 flex-1">
                 <p className="truncate font-display text-sm font-extrabold text-navy">
                   {w.name} · {w.city}
                 </p>
