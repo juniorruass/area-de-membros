@@ -12,10 +12,10 @@ import {
   type WinnerRow,
 } from "@/api/admin";
 
-export const Route = createFileRoute("/admin/sorteio")({
+export const Route = createFileRoute("/adminsistema/sorteio")({
   beforeLoad: async () => {
     const { authenticated } = await checkAdminAuth();
-    if (!authenticated) throw redirect({ to: "/admin/login" });
+    if (!authenticated) throw redirect({ to: "/adminsistema/login" });
   },
   component: SorteioAdmin,
 });

@@ -14,10 +14,10 @@ import {
   type MoldeRow,
 } from "@/api/admin";
 
-export const Route = createFileRoute("/admin/moldes")({
+export const Route = createFileRoute("/adminsistema/moldes")({
   beforeLoad: async () => {
     const { authenticated } = await checkAdminAuth();
-    if (!authenticated) throw redirect({ to: "/admin/login" });
+    if (!authenticated) throw redirect({ to: "/adminsistema/login" });
   },
   component: MoldesAdmin,
 });

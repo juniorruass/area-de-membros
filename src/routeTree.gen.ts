@@ -11,12 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuiaDeVendasRouteImport } from './routes/guia-de-vendas'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminConfiguracoesRouteImport } from './routes/admin.configuracoes'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminMoldesRouteImport } from './routes/admin.moldes'
-import { Route as AdminSorteioRouteImport } from './routes/admin.sorteio'
-import { Route as AdminVideosRouteImport } from './routes/admin.videos'
+import { Route as AdminsistemaIndexRouteImport } from './routes/adminsistema.index'
+import { Route as AdminsistemaConfiguracoesRouteImport } from './routes/adminsistema.configuracoes'
+import { Route as AdminsistemaLoginRouteImport } from './routes/adminsistema.login'
+import { Route as AdminsistemaMoldesRouteImport } from './routes/adminsistema.moldes'
+import { Route as AdminsistemaSorteioRouteImport } from './routes/adminsistema.sorteio'
+import { Route as AdminsistemaVideosRouteImport } from './routes/adminsistema.videos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,110 +28,111 @@ const GuiaDeVendasRoute = GuiaDeVendasRouteImport.update({
   path: '/guia-de-vendas',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const AdminsistemaIndexRoute = AdminsistemaIndexRouteImport.update({
+  id: '/adminsistema/',
+  path: '/adminsistema/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
-  id: '/admin/configuracoes',
-  path: '/admin/configuracoes',
+const AdminsistemaConfiguracoesRoute =
+  AdminsistemaConfiguracoesRouteImport.update({
+    id: '/adminsistema/configuracoes',
+    path: '/adminsistema/configuracoes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminsistemaLoginRoute = AdminsistemaLoginRouteImport.update({
+  id: '/adminsistema/login',
+  path: '/adminsistema/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
+const AdminsistemaMoldesRoute = AdminsistemaMoldesRouteImport.update({
+  id: '/adminsistema/moldes',
+  path: '/adminsistema/moldes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminMoldesRoute = AdminMoldesRouteImport.update({
-  id: '/admin/moldes',
-  path: '/admin/moldes',
+const AdminsistemaSorteioRoute = AdminsistemaSorteioRouteImport.update({
+  id: '/adminsistema/sorteio',
+  path: '/adminsistema/sorteio',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSorteioRoute = AdminSorteioRouteImport.update({
-  id: '/admin/sorteio',
-  path: '/admin/sorteio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminVideosRoute = AdminVideosRouteImport.update({
-  id: '/admin/videos',
-  path: '/admin/videos',
+const AdminsistemaVideosRoute = AdminsistemaVideosRouteImport.update({
+  id: '/adminsistema/videos',
+  path: '/adminsistema/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
-  '/admin/login': typeof AdminLoginRoute
-  '/admin/moldes': typeof AdminMoldesRoute
-  '/admin/sorteio': typeof AdminSorteioRoute
-  '/admin/videos': typeof AdminVideosRoute
-  '/admin/': typeof AdminIndexRoute
+  '/adminsistema/configuracoes': typeof AdminsistemaConfiguracoesRoute
+  '/adminsistema/login': typeof AdminsistemaLoginRoute
+  '/adminsistema/moldes': typeof AdminsistemaMoldesRoute
+  '/adminsistema/sorteio': typeof AdminsistemaSorteioRoute
+  '/adminsistema/videos': typeof AdminsistemaVideosRoute
+  '/adminsistema/': typeof AdminsistemaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
-  '/admin/login': typeof AdminLoginRoute
-  '/admin/moldes': typeof AdminMoldesRoute
-  '/admin/sorteio': typeof AdminSorteioRoute
-  '/admin/videos': typeof AdminVideosRoute
-  '/admin': typeof AdminIndexRoute
+  '/adminsistema/configuracoes': typeof AdminsistemaConfiguracoesRoute
+  '/adminsistema/login': typeof AdminsistemaLoginRoute
+  '/adminsistema/moldes': typeof AdminsistemaMoldesRoute
+  '/adminsistema/sorteio': typeof AdminsistemaSorteioRoute
+  '/adminsistema/videos': typeof AdminsistemaVideosRoute
+  '/adminsistema': typeof AdminsistemaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
-  '/admin/login': typeof AdminLoginRoute
-  '/admin/moldes': typeof AdminMoldesRoute
-  '/admin/sorteio': typeof AdminSorteioRoute
-  '/admin/videos': typeof AdminVideosRoute
-  '/admin/': typeof AdminIndexRoute
+  '/adminsistema/configuracoes': typeof AdminsistemaConfiguracoesRoute
+  '/adminsistema/login': typeof AdminsistemaLoginRoute
+  '/adminsistema/moldes': typeof AdminsistemaMoldesRoute
+  '/adminsistema/sorteio': typeof AdminsistemaSorteioRoute
+  '/adminsistema/videos': typeof AdminsistemaVideosRoute
+  '/adminsistema/': typeof AdminsistemaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/guia-de-vendas'
-    | '/admin/configuracoes'
-    | '/admin/login'
-    | '/admin/moldes'
-    | '/admin/sorteio'
-    | '/admin/videos'
-    | '/admin/'
+    | '/adminsistema/configuracoes'
+    | '/adminsistema/login'
+    | '/adminsistema/moldes'
+    | '/adminsistema/sorteio'
+    | '/adminsistema/videos'
+    | '/adminsistema/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/guia-de-vendas'
-    | '/admin/configuracoes'
-    | '/admin/login'
-    | '/admin/moldes'
-    | '/admin/sorteio'
-    | '/admin/videos'
-    | '/admin'
+    | '/adminsistema/configuracoes'
+    | '/adminsistema/login'
+    | '/adminsistema/moldes'
+    | '/adminsistema/sorteio'
+    | '/adminsistema/videos'
+    | '/adminsistema'
   id:
     | '__root__'
     | '/'
     | '/guia-de-vendas'
-    | '/admin/configuracoes'
-    | '/admin/login'
-    | '/admin/moldes'
-    | '/admin/sorteio'
-    | '/admin/videos'
-    | '/admin/'
+    | '/adminsistema/configuracoes'
+    | '/adminsistema/login'
+    | '/adminsistema/moldes'
+    | '/adminsistema/sorteio'
+    | '/adminsistema/videos'
+    | '/adminsistema/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GuiaDeVendasRoute: typeof GuiaDeVendasRoute
-  AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminMoldesRoute: typeof AdminMoldesRoute
-  AdminSorteioRoute: typeof AdminSorteioRoute
-  AdminVideosRoute: typeof AdminVideosRoute
-  AdminIndexRoute: typeof AdminIndexRoute
+  AdminsistemaConfiguracoesRoute: typeof AdminsistemaConfiguracoesRoute
+  AdminsistemaLoginRoute: typeof AdminsistemaLoginRoute
+  AdminsistemaMoldesRoute: typeof AdminsistemaMoldesRoute
+  AdminsistemaSorteioRoute: typeof AdminsistemaSorteioRoute
+  AdminsistemaVideosRoute: typeof AdminsistemaVideosRoute
+  AdminsistemaIndexRoute: typeof AdminsistemaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -150,46 +151,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuiaDeVendasRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
+    '/adminsistema/': {
+      id: '/adminsistema/'
+      path: '/adminsistema'
+      fullPath: '/adminsistema/'
+      preLoaderRoute: typeof AdminsistemaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/configuracoes': {
-      id: '/admin/configuracoes'
-      path: '/admin/configuracoes'
-      fullPath: '/admin/configuracoes'
-      preLoaderRoute: typeof AdminConfiguracoesRouteImport
+    '/adminsistema/configuracoes': {
+      id: '/adminsistema/configuracoes'
+      path: '/adminsistema/configuracoes'
+      fullPath: '/adminsistema/configuracoes'
+      preLoaderRoute: typeof AdminsistemaConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
+    '/adminsistema/login': {
+      id: '/adminsistema/login'
+      path: '/adminsistema/login'
+      fullPath: '/adminsistema/login'
+      preLoaderRoute: typeof AdminsistemaLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/moldes': {
-      id: '/admin/moldes'
-      path: '/admin/moldes'
-      fullPath: '/admin/moldes'
-      preLoaderRoute: typeof AdminMoldesRouteImport
+    '/adminsistema/moldes': {
+      id: '/adminsistema/moldes'
+      path: '/adminsistema/moldes'
+      fullPath: '/adminsistema/moldes'
+      preLoaderRoute: typeof AdminsistemaMoldesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/sorteio': {
-      id: '/admin/sorteio'
-      path: '/admin/sorteio'
-      fullPath: '/admin/sorteio'
-      preLoaderRoute: typeof AdminSorteioRouteImport
+    '/adminsistema/sorteio': {
+      id: '/adminsistema/sorteio'
+      path: '/adminsistema/sorteio'
+      fullPath: '/adminsistema/sorteio'
+      preLoaderRoute: typeof AdminsistemaSorteioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/videos': {
-      id: '/admin/videos'
-      path: '/admin/videos'
-      fullPath: '/admin/videos'
-      preLoaderRoute: typeof AdminVideosRouteImport
+    '/adminsistema/videos': {
+      id: '/adminsistema/videos'
+      path: '/adminsistema/videos'
+      fullPath: '/adminsistema/videos'
+      preLoaderRoute: typeof AdminsistemaVideosRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -198,12 +199,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GuiaDeVendasRoute: GuiaDeVendasRoute,
-  AdminConfiguracoesRoute: AdminConfiguracoesRoute,
-  AdminLoginRoute: AdminLoginRoute,
-  AdminMoldesRoute: AdminMoldesRoute,
-  AdminSorteioRoute: AdminSorteioRoute,
-  AdminVideosRoute: AdminVideosRoute,
-  AdminIndexRoute: AdminIndexRoute,
+  AdminsistemaConfiguracoesRoute: AdminsistemaConfiguracoesRoute,
+  AdminsistemaLoginRoute: AdminsistemaLoginRoute,
+  AdminsistemaMoldesRoute: AdminsistemaMoldesRoute,
+  AdminsistemaSorteioRoute: AdminsistemaSorteioRoute,
+  AdminsistemaVideosRoute: AdminsistemaVideosRoute,
+  AdminsistemaIndexRoute: AdminsistemaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

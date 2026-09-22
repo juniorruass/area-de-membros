@@ -3,10 +3,10 @@ import type { ReactNode } from "react";
 import { logoutAdmin } from "@/api/admin";
 
 const TABS = [
-  { to: "/admin/moldes", label: "Moldes" },
-  { to: "/admin/videos", label: "Vídeos" },
-  { to: "/admin/sorteio", label: "Sorteio" },
-  { to: "/admin/configuracoes", label: "Configurações" },
+  { to: "/adminsistema/moldes", label: "Moldes" },
+  { to: "/adminsistema/videos", label: "Vídeos" },
+  { to: "/adminsistema/sorteio", label: "Sorteio" },
+  { to: "/adminsistema/configuracoes", label: "Configurações" },
 ] as const;
 
 export function AdminShell({ title, children }: { title: string; children: ReactNode }) {
@@ -14,7 +14,7 @@ export function AdminShell({ title, children }: { title: string; children: React
 
   const sair = async () => {
     await logoutAdmin();
-    await navigate({ to: "/admin/login" });
+    await navigate({ to: "/adminsistema/login" });
   };
 
   return (

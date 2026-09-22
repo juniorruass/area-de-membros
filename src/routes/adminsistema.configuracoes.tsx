@@ -4,10 +4,10 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { siteUrl } from "@/lib/storage-url";
 import { checkAdminAuth, listSettings, updateSettings, uploadFile } from "@/api/admin";
 
-export const Route = createFileRoute("/admin/configuracoes")({
+export const Route = createFileRoute("/adminsistema/configuracoes")({
   beforeLoad: async () => {
     const { authenticated } = await checkAdminAuth();
-    if (!authenticated) throw redirect({ to: "/admin/login" });
+    if (!authenticated) throw redirect({ to: "/adminsistema/login" });
   },
   component: ConfiguracoesAdmin,
 });

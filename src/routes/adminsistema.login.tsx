@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { loginAdmin } from "@/api/admin";
 
-export const Route = createFileRoute("/admin/login")({
+export const Route = createFileRoute("/adminsistema/login")({
   head: () => ({
     meta: [{ title: "Login — Admin" }, { name: "robots", content: "noindex" }],
   }),
@@ -21,7 +21,7 @@ function LoginPage() {
     setError(null);
     try {
       await loginAdmin({ data: { password } });
-      await navigate({ to: "/admin" });
+      await navigate({ to: "/adminsistema" });
     } catch {
       setError("Senha incorreta.");
     } finally {

@@ -12,10 +12,10 @@ import {
   type VideoRow,
 } from "@/api/admin";
 
-export const Route = createFileRoute("/admin/videos")({
+export const Route = createFileRoute("/adminsistema/videos")({
   beforeLoad: async () => {
     const { authenticated } = await checkAdminAuth();
-    if (!authenticated) throw redirect({ to: "/admin/login" });
+    if (!authenticated) throw redirect({ to: "/adminsistema/login" });
   },
   component: VideosAdmin,
 });
@@ -48,6 +48,7 @@ function VideosAdmin() {
   const [yt, setYt] = useState("");
   const [title, setTitle] = useState("");
   const [cat, setCat] = useState<string>(CATS[0]);
+  const [position, setPosition] = useState("");
   const [saving, setSaving] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
 
@@ -62,6 +63,9 @@ function VideosAdmin() {
     setYt(v.yt);
     setTitle(v.title);
     setCat(v.cat || CATS[0]);
+    const group = (rows ?? []).filter((r) => r.cat === v.cat);
+    const idx = group.findIndex((r) => r.id === v.id);
+    setPosition(idx >= 0 ? String(idx + 1) : "");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -70,6 +74,7 @@ function VideosAdmin() {
     setYt("");
     setTitle("");
     setCat(CATS[0]);
+    setPosition("");
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -79,7 +84,7 @@ function VideosAdmin() {
     try {
       const maxOrder = rows && rows.length > 0 ? Math.max(...rows.map((r) => r.sort_order)) : -1;
       const existing = id ? rows?.find((r) => r.id === id) : undefined;
-      await upsertVideo({
+      const { id: savedId } = await upsertVideo({
         data: {
           ...(id ? { id } : {}),
           yt: extractYoutubeId(yt),
@@ -88,6 +93,24 @@ function VideosAdmin() {
           sort_order: existing?.sort_order ?? maxOrder + 1,
         },
       });
+
+      const freshRows = await listVideos();
+      setRows(freshRows);
+
+      if (position.trim()) {
+        const group = freshRows.filter((r) => r.cat === cat);
+        const from = group.findIndex((r) => r.id === savedId);
+        const to = Math.min(Math.max(Number(position) - 1, 0), group.length - 1);
+        if (from !== -1 && to !== from && !Number.isNaN(to)) {
+          const ids = moveId(
+            group.map((r) => r.id),
+            from,
+            to,
+          );
+          await reorderItems({ data: { table: "videos", ids } });
+        }
+      }
+
       resetForm();
       await load();
     } finally {
@@ -152,6 +175,22 @@ function VideosAdmin() {
                 </option>
               ))}
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-navy">
+              Posição na categoria (opcional)
+            </label>
+            <input
+              type="number"
+              min={1}
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              placeholder="Ex: 3"
+              className="mt-1 w-full rounded-2xl border border-line bg-surface-alt px-4 py-2.5 outline-none focus:border-pink"
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Quem já está nessa posição (e as seguintes) desce uma posição.
+            </p>
           </div>
         </div>
         <div className="mt-4 flex gap-2">
