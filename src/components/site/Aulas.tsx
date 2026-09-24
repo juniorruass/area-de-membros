@@ -52,7 +52,7 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
             <iframe
               key={current.yt}
               className="h-full w-full"
-              src={`https://www.youtube-nocookie.com/embed/${current.yt}`}
+              src={`https://www.youtube-nocookie.com/embed/${current.yt}?modestbranding=1&rel=0&iv_load_policy=3&color=white`}
               title={current.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

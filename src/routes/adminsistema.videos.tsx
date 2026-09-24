@@ -49,6 +49,7 @@ function VideosAdmin() {
   const [title, setTitle] = useState("");
   const [cat, setCat] = useState<string>(CATS[0]);
   const [position, setPosition] = useState("");
+  const [exclusive, setExclusive] = useState(false);
   const [saving, setSaving] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
 
@@ -66,6 +67,7 @@ function VideosAdmin() {
     const group = (rows ?? []).filter((r) => r.cat === v.cat);
     const idx = group.findIndex((r) => r.id === v.id);
     setPosition(idx >= 0 ? String(idx + 1) : "");
+    setExclusive(v.exclusive ?? false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -75,6 +77,7 @@ function VideosAdmin() {
     setTitle("");
     setCat(CATS[0]);
     setPosition("");
+    setExclusive(false);
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -91,6 +94,7 @@ function VideosAdmin() {
           title: title.trim(),
           cat,
           sort_order: existing?.sort_order ?? maxOrder + 1,
+          exclusive,
         },
       });
 
@@ -192,6 +196,19 @@ function VideosAdmin() {
               Quem já está nessa posição (e as seguintes) desce uma posição.
             </p>
           </div>
+
+          <div className="flex items-center gap-2 sm:col-span-2">
+            <input
+              id="video-exclusive"
+              type="checkbox"
+              checked={exclusive}
+              onChange={(e) => setExclusive(e.target.checked)}
+              className="size-4"
+            />
+            <label htmlFor="video-exclusive" className="text-sm font-bold text-navy">
+              Conteúdo exclusivo (só aparece pra quem tem telefone liberado)
+            </label>
+          </div>
         </div>
         <div className="mt-4 flex gap-2">
           <button
@@ -253,6 +270,7 @@ function VideosAdmin() {
                     />
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-display text-sm font-extrabold text-navy">
+                        {v.exclusive ? "🔒 " : ""}
                         {v.title}
                       </p>
                       <p className="truncate text-xs text-muted-foreground">{v.yt}</p>

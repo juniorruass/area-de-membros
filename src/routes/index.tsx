@@ -5,6 +5,7 @@ import { Sorteio } from "@/components/site/Sorteio";
 import { Pagamento } from "@/components/site/Pagamento";
 import { Moldes } from "@/components/site/Moldes";
 import { Aulas } from "@/components/site/Aulas";
+import { ConteudoExclusivo } from "@/components/site/ConteudoExclusivo";
 import { Precificacao } from "@/components/site/Precificacao";
 import { CustoProducao } from "@/components/site/CustoProducao";
 import { Bonus } from "@/components/site/Bonus";
@@ -41,7 +42,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { moldes, videos, settings, winner } = Route.useLoaderData();
+  const { moldes, videos, settings, winner, hasExclusive } = Route.useLoaderData();
   const [custo, setCusto] = useState(0);
 
   return (
@@ -56,6 +57,7 @@ function Index() {
       <Hero />
       <Sorteio winner={winner} />
       <Pagamento pixKey={settings.pix_key} pixName={settings.pix_name} />
+      <ConteudoExclusivo show={hasExclusive} />
       <Aulas videos={videos} />
       <Moldes moldes={moldes} />
       <Precificacao custo={custo} />

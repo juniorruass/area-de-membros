@@ -6,6 +6,7 @@ const TABS = [
   { to: "/adminsistema/moldes", label: "Moldes" },
   { to: "/adminsistema/videos", label: "Vídeos" },
   { to: "/adminsistema/sorteio", label: "Sorteio" },
+  { to: "/adminsistema/exclusivo", label: "Exclusivo" },
   { to: "/adminsistema/configuracoes", label: "Configurações" },
 ] as const;
 

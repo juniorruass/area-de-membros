@@ -46,6 +46,7 @@ const emptyForm = {
   title: "",
   pages: "" as string,
   kind: "pdf" as "pdf" | "imagem",
+  exclusive: false,
 };
 
 function MoldesAdmin() {
@@ -70,6 +71,7 @@ function MoldesAdmin() {
       title: m.title,
       pages: m.pages === null ? "" : String(m.pages),
       kind: (m.kind as "pdf" | "imagem") ?? "pdf",
+      exclusive: m.exclusive ?? false,
     });
     setFileInput(null);
     setCoverInput(null);
@@ -128,6 +130,7 @@ function MoldesAdmin() {
           cover_path: coverPath,
           kind: form.kind,
           sort_order: existing?.sort_order ?? maxOrder + 1,
+          exclusive: form.exclusive,
         },
       });
 
@@ -238,6 +241,19 @@ function MoldesAdmin() {
               className="mt-1 w-full text-sm"
             />
           </div>
+
+          <div className="flex items-center gap-2 sm:col-span-2">
+            <input
+              id="molde-exclusive"
+              type="checkbox"
+              checked={form.exclusive}
+              onChange={(e) => setForm((f) => ({ ...f, exclusive: e.target.checked }))}
+              className="size-4"
+            />
+            <label htmlFor="molde-exclusive" className="text-sm font-bold text-navy">
+              Conteúdo exclusivo (só aparece pra quem tem telefone liberado)
+            </label>
+          </div>
         </div>
 
         {error ? <p className="mt-3 text-sm font-semibold text-destructive">{error}</p> : null}
@@ -303,7 +319,12 @@ function MoldesAdmin() {
                         dragProps={{}}
                       />
                     </div>
-                    <div className="flex h-28 items-center justify-center bg-surface-alt">
+                    <div className="relative flex h-28 items-center justify-center bg-surface-alt">
+                      {m.exclusive ? (
+                        <span className="absolute left-1.5 top-1.5 z-10 rounded-full bg-navy px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
+                          🔒 Exclusivo
+                        </span>
+                      ) : null}
                       {m.cover_path ? (
                         <img
                           src={materiaisUrl(m.cover_path)}

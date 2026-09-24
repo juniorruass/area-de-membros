@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isAdminAuthenticated, useAdminSession } from "@/lib/admin-session";
+import { normalizePhone } from "@/lib/phone";
 
 function requireAdmin(ok: boolean) {
   if (!ok) throw new Error("unauthorized");
@@ -41,6 +42,7 @@ export type MoldeRow = {
   cover_path: string | null;
   kind: string;
   sort_order: number;
+  exclusive: boolean;
 };
 
 export const listMoldes = createServerFn({ method: "GET" }).handler(async () => {
@@ -64,6 +66,7 @@ export const upsertMolde = createServerFn({ method: "POST" })
       cover_path: string | null;
       kind: string;
       sort_order: number;
+      exclusive: boolean;
     }) => data,
   )
   .handler(async ({ data }) => {
@@ -95,7 +98,14 @@ export const deleteMolde = createServerFn({ method: "POST" })
 
 // ---------- Videos ----------
 
-export type VideoRow = { id: string; yt: string; title: string; cat: string; sort_order: number };
+export type VideoRow = {
+  id: string;
+  yt: string;
+  title: string;
+  cat: string;
+  sort_order: number;
+  exclusive: boolean;
+};
 
 export const listVideos = createServerFn({ method: "GET" }).handler(async () => {
   requireAdmin(await isAdminAuthenticated());
@@ -109,7 +119,14 @@ export const listVideos = createServerFn({ method: "GET" }).handler(async () => 
 
 export const upsertVideo = createServerFn({ method: "POST" })
   .validator(
-    (data: { id?: string; yt: string; title: string; cat: string; sort_order: number }) => data,
+    (data: {
+      id?: string;
+      yt: string;
+      title: string;
+      cat: string;
+      sort_order: number;
+      exclusive: boolean;
+    }) => data,
   )
   .handler(async ({ data }) => {
     requireAdmin(await isAdminAuthenticated());
@@ -186,6 +203,50 @@ export const deleteWinner = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     requireAdmin(await isAdminAuthenticated());
     const { error } = await getSupabaseAdmin().from("sorteio_winners").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+// ---------- Telefones liberados (conteudo exclusivo) ----------
+
+export type ExclusivePhoneRow = {
+  id: string;
+  phone: string;
+  note: string | null;
+  created_at: string;
+};
+
+export const listExclusivePhones = createServerFn({ method: "GET" }).handler(async () => {
+  requireAdmin(await isAdminAuthenticated());
+  const { data, error } = await getSupabaseAdmin()
+    .from("exclusive_phones")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as ExclusivePhoneRow[];
+});
+
+export const addExclusivePhone = createServerFn({ method: "POST" })
+  .validator((data: { phone: string; note: string | null }) => data)
+  .handler(async ({ data }) => {
+    requireAdmin(await isAdminAuthenticated());
+    const phone = normalizePhone(data.phone);
+    if (!phone) throw new Error("Telefone invalido");
+    const { error } = await getSupabaseAdmin()
+      .from("exclusive_phones")
+      .insert({ phone, note: data.note });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const deleteExclusivePhone = createServerFn({ method: "POST" })
+  .validator((data: { id: string }) => data)
+  .handler(async ({ data }) => {
+    requireAdmin(await isAdminAuthenticated());
+    const { error } = await getSupabaseAdmin()
+      .from("exclusive_phones")
+      .delete()
+      .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

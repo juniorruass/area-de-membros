@@ -30,9 +30,12 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
   const [moldesRes, videosRes, winnersRes, settingsRes] = await Promise.all([
     supabase
       .from("moldes")
-      .select("id, cat, title, pages, file_path, cover_path, kind")
+      .select("id, cat, title, pages, file_path, cover_path, kind, exclusive")
       .order("sort_order", { ascending: true }),
-    supabase.from("videos").select("id, yt, title, cat").order("sort_order", { ascending: true }),
+    supabase
+      .from("videos")
+      .select("id, yt, title, cat, exclusive")
+      .order("sort_order", { ascending: true }),
     supabase
       .from("sorteio_winners")
       .select("name, city, prize")
@@ -53,9 +56,14 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
   const winners = winnersRes.data as PublicWinner[];
   const winner = pickCurrentWinner(winners);
 
+  const allMoldes = moldesRes.data as (PublicMolde & { exclusive: boolean })[];
+  const allVideos = videosRes.data as (PublicVideo & { exclusive: boolean })[];
+  const hasExclusive = allMoldes.some((m) => m.exclusive) || allVideos.some((v) => v.exclusive);
+
   return {
-    moldes: moldesRes.data as PublicMolde[],
-    videos: videosRes.data as PublicVideo[],
+    moldes: allMoldes.filter((m) => !m.exclusive),
+    videos: allVideos.filter((v) => !v.exclusive),
+    hasExclusive,
     settings: {
       pix_key: settingsMap["pix_key"] ?? "",
       pix_name: settingsMap["pix_name"] ?? "",

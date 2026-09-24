@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExclusivoRouteImport } from './routes/exclusivo'
 import { Route as GuiaDeVendasRouteImport } from './routes/guia-de-vendas'
 import { Route as AdminsistemaIndexRouteImport } from './routes/adminsistema.index'
 import { Route as AdminsistemaConfiguracoesRouteImport } from './routes/adminsistema.configuracoes'
+import { Route as AdminsistemaExclusivoRouteImport } from './routes/adminsistema.exclusivo'
 import { Route as AdminsistemaLoginRouteImport } from './routes/adminsistema.login'
 import { Route as AdminsistemaMoldesRouteImport } from './routes/adminsistema.moldes'
 import { Route as AdminsistemaSorteioRouteImport } from './routes/adminsistema.sorteio'
@@ -21,6 +23,11 @@ import { Route as AdminsistemaVideosRouteImport } from './routes/adminsistema.vi
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExclusivoRoute = ExclusivoRouteImport.update({
+  id: '/exclusivo',
+  path: '/exclusivo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuiaDeVendasRoute = GuiaDeVendasRouteImport.update({
@@ -39,6 +46,11 @@ const AdminsistemaConfiguracoesRoute =
     path: '/adminsistema/configuracoes',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminsistemaExclusivoRoute = AdminsistemaExclusivoRouteImport.update({
+  id: '/adminsistema/exclusivo',
+  path: '/adminsistema/exclusivo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminsistemaLoginRoute = AdminsistemaLoginRouteImport.update({
   id: '/adminsistema/login',
   path: '/adminsistema/login',
@@ -62,8 +74,10 @@ const AdminsistemaVideosRoute = AdminsistemaVideosRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exclusivo': typeof ExclusivoRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
   '/adminsistema/configuracoes': typeof AdminsistemaConfiguracoesRoute
+  '/adminsistema/exclusivo': typeof AdminsistemaExclusivoRoute
   '/adminsistema/login': typeof AdminsistemaLoginRoute
   '/adminsistema/moldes': typeof AdminsistemaMoldesRoute
   '/adminsistema/sorteio': typeof AdminsistemaSorteioRoute
@@ -72,8 +86,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exclusivo': typeof ExclusivoRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
   '/adminsistema/configuracoes': typeof AdminsistemaConfiguracoesRoute
+  '/adminsistema/exclusivo': typeof AdminsistemaExclusivoRoute
   '/adminsistema/login': typeof AdminsistemaLoginRoute
   '/adminsistema/moldes': typeof AdminsistemaMoldesRoute
   '/adminsistema/sorteio': typeof AdminsistemaSorteioRoute
@@ -83,8 +99,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exclusivo': typeof ExclusivoRoute
   '/guia-de-vendas': typeof GuiaDeVendasRoute
   '/adminsistema/configuracoes': typeof AdminsistemaConfiguracoesRoute
+  '/adminsistema/exclusivo': typeof AdminsistemaExclusivoRoute
   '/adminsistema/login': typeof AdminsistemaLoginRoute
   '/adminsistema/moldes': typeof AdminsistemaMoldesRoute
   '/adminsistema/sorteio': typeof AdminsistemaSorteioRoute
@@ -95,8 +113,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/exclusivo'
     | '/guia-de-vendas'
     | '/adminsistema/configuracoes'
+    | '/adminsistema/exclusivo'
     | '/adminsistema/login'
     | '/adminsistema/moldes'
     | '/adminsistema/sorteio'
@@ -105,8 +125,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/exclusivo'
     | '/guia-de-vendas'
     | '/adminsistema/configuracoes'
+    | '/adminsistema/exclusivo'
     | '/adminsistema/login'
     | '/adminsistema/moldes'
     | '/adminsistema/sorteio'
@@ -115,8 +137,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/exclusivo'
     | '/guia-de-vendas'
     | '/adminsistema/configuracoes'
+    | '/adminsistema/exclusivo'
     | '/adminsistema/login'
     | '/adminsistema/moldes'
     | '/adminsistema/sorteio'
@@ -126,8 +150,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExclusivoRoute: typeof ExclusivoRoute
   GuiaDeVendasRoute: typeof GuiaDeVendasRoute
   AdminsistemaConfiguracoesRoute: typeof AdminsistemaConfiguracoesRoute
+  AdminsistemaExclusivoRoute: typeof AdminsistemaExclusivoRoute
   AdminsistemaLoginRoute: typeof AdminsistemaLoginRoute
   AdminsistemaMoldesRoute: typeof AdminsistemaMoldesRoute
   AdminsistemaSorteioRoute: typeof AdminsistemaSorteioRoute
@@ -142,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exclusivo': {
+      id: '/exclusivo'
+      path: '/exclusivo'
+      fullPath: '/exclusivo'
+      preLoaderRoute: typeof ExclusivoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guia-de-vendas': {
@@ -163,6 +196,13 @@ declare module '@tanstack/react-router' {
       path: '/adminsistema/configuracoes'
       fullPath: '/adminsistema/configuracoes'
       preLoaderRoute: typeof AdminsistemaConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adminsistema/exclusivo': {
+      id: '/adminsistema/exclusivo'
+      path: '/adminsistema/exclusivo'
+      fullPath: '/adminsistema/exclusivo'
+      preLoaderRoute: typeof AdminsistemaExclusivoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/adminsistema/login': {
@@ -198,8 +238,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExclusivoRoute: ExclusivoRoute,
   GuiaDeVendasRoute: GuiaDeVendasRoute,
   AdminsistemaConfiguracoesRoute: AdminsistemaConfiguracoesRoute,
+  AdminsistemaExclusivoRoute: AdminsistemaExclusivoRoute,
   AdminsistemaLoginRoute: AdminsistemaLoginRoute,
   AdminsistemaMoldesRoute: AdminsistemaMoldesRoute,
   AdminsistemaSorteioRoute: AdminsistemaSorteioRoute,
