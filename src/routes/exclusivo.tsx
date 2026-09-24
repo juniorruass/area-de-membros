@@ -29,7 +29,7 @@ function ExclusivoPage() {
   const [videos, setVideos] = useState(data.content.videos);
   const [current, setCurrent] = useState(data.content.videos[0] ?? null);
   const [phone, setPhone] = useState("");
-  const [notFound, setNotFound] = useState(false);
+  const [showRequest, setShowRequest] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { settings } = data;
@@ -38,11 +38,10 @@ function ExclusivoPage() {
     e.preventDefault();
     if (!phone.trim()) return;
     setLoading(true);
-    setNotFound(false);
     try {
       const res = await unlockExclusive({ data: { phone } });
       if (!res.ok) {
-        setNotFound(true);
+        setShowRequest(true);
         return;
       }
       const fresh = await getExclusiveContent();
@@ -85,11 +84,29 @@ function ExclusivoPage() {
             </button>
           </form>
 
-          {notFound ? (
-            <div className="mt-5 rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-left">
-              <p className="text-sm font-semibold text-destructive">
-                Esse telefone ainda não tem acesso liberado.
+          <button
+            type="button"
+            onClick={() => setShowRequest(true)}
+            className="mt-4 text-sm font-semibold text-muted-foreground underline"
+          >
+            Ainda não tenho acesso — solicitar liberação
+          </button>
+        </div>
+
+        {showRequest ? (
+          <div className="fixed inset-0 z-40 flex items-center justify-center bg-navy-deep/70 px-5">
+            <div className="relative w-full max-w-[380px] overflow-hidden rounded-3xl bg-card p-6 text-center shadow-pop">
+              <div className="absolute inset-x-0 top-0 h-1.5 bg-pink" />
+
+              <p className="text-5xl">🔒</p>
+              <h3 className="mt-3 font-display text-xl font-black uppercase leading-tight text-navy">
+                Solicitar Acesso
+              </h3>
+              <p className="mt-4 text-sm text-ink">
+                Esse telefone ainda não tem acesso liberado. Chama no WhatsApp que a gente libera
+                pra você.
               </p>
+
               {settings.suporte_whatsapp ? (
                 <a
                   href={`https://wa.me/${settings.suporte_whatsapp}?text=${encodeURIComponent(
@@ -97,14 +114,22 @@ function ExclusivoPage() {
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 block w-full rounded-2xl bg-green px-5 py-3 text-center font-display text-sm font-extrabold text-primary-foreground shadow-soft"
+                  className="mt-5 block w-full rounded-2xl bg-green px-5 py-3 text-center font-display text-sm font-extrabold text-primary-foreground shadow-soft transition-transform active:scale-[0.98]"
                 >
-                  📱 Pedir liberação no suporte
+                  📱 Solicitar pelo WhatsApp
                 </a>
               ) : null}
+
+              <button
+                type="button"
+                onClick={() => setShowRequest(false)}
+                className="mt-4 text-sm font-semibold text-muted-foreground underline"
+              >
+                Fechar
+              </button>
             </div>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </main>
     );
   }
