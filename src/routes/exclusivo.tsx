@@ -28,6 +28,7 @@ function ExclusivoPage() {
   const [moldes, setMoldes] = useState(data.content.moldes);
   const [videos, setVideos] = useState(data.content.videos);
   const [current, setCurrent] = useState(data.content.videos[0] ?? null);
+  const [playing, setPlaying] = useState(false);
   const [phone, setPhone] = useState("");
   const [showRequest, setShowRequest] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ function ExclusivoPage() {
       setMoldes(fresh.moldes);
       setVideos(fresh.videos);
       setCurrent(fresh.videos[0] ?? null);
+      setPlaying(true);
     } finally {
       setLoading(false);
     }
@@ -149,15 +151,29 @@ function ExclusivoPage() {
             {current ? (
               <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-soft">
                 <div className="aspect-video w-full bg-navy-deep">
-                  <iframe
-                    key={current.yt}
-                    className="h-full w-full"
-                    src={`https://www.youtube-nocookie.com/embed/${current.yt}?modestbranding=1&rel=0&iv_load_policy=3&color=white&autoplay=1`}
-                    title={current.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  />
+                  {playing ? (
+                    <iframe
+                      key={current.yt}
+                      className="h-full w-full"
+                      src={`https://www.youtube-nocookie.com/embed/${current.yt}?modestbranding=1&rel=0&iv_load_policy=3&color=white&autoplay=1`}
+                      title={current.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setPlaying(true)}
+                      className="flex h-full w-full flex-col items-center justify-center gap-3"
+                    >
+                      <span className="flex size-16 items-center justify-center rounded-full bg-pink text-3xl text-navy shadow-soft transition-transform active:scale-95">
+                        ▶
+                      </span>
+                      <span className="px-6 text-center text-sm font-semibold text-primary-foreground/80">
+                        Toque para assistir
+                      </span>
+                    </button>
+                  )}
                 </div>
                 <div className="p-4">
                   <p className="text-sm font-semibold text-navy">{current.title}</p>
@@ -170,7 +186,10 @@ function ExclusivoPage() {
                 <button
                   key={v.id}
                   type="button"
-                  onClick={() => setCurrent(v)}
+                  onClick={() => {
+                    setCurrent(v);
+                    setPlaying(true);
+                  }}
                   className={`overflow-hidden rounded-2xl border text-left ${
                     current?.id === v.id ? "border-pink" : "border-line"
                   } bg-card shadow-soft`}
