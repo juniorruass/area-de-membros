@@ -23,6 +23,22 @@ export const unlockExclusive = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
+export const requestExclusiveAccess = createServerFn({ method: "POST" })
+  .validator((data: { phone: string }) => data)
+  .handler(async ({ data }) => {
+    const phone = normalizePhone(data.phone);
+    if (!phone) throw new Error("Telefone invalido");
+
+    const { error } = await getSupabaseAdmin()
+      .from("exclusive_requests")
+      .upsert(
+        { phone, status: "pending", created_at: new Date().toISOString(), decided_at: null },
+        { onConflict: "phone" },
+      );
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const getExclusiveContent = createServerFn({ method: "GET" }).handler(async () => {
   const session = await readExclusiveSession();
   if (!session.data.phone) {

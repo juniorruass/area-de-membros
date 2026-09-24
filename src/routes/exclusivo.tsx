@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { getExclusiveContent, unlockExclusive } from "@/api/exclusive";
+import { getExclusiveContent, requestExclusiveAccess, unlockExclusive } from "@/api/exclusive";
 import { getPublicData } from "@/api/public-data";
 import { materiaisUrl } from "@/lib/storage-url";
 
@@ -35,6 +35,17 @@ function ExclusivoPage() {
 
   const { settings } = data;
 
+  const openRequest = async () => {
+    if (!phone.trim()) return;
+    setLoading(true);
+    try {
+      await requestExclusiveAccess({ data: { phone } });
+      setShowRequest(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone.trim()) return;
@@ -42,6 +53,7 @@ function ExclusivoPage() {
     try {
       const res = await unlockExclusive({ data: { phone } });
       if (!res.ok) {
+        await requestExclusiveAccess({ data: { phone } });
         setShowRequest(true);
         return;
       }
@@ -87,8 +99,8 @@ function ExclusivoPage() {
 
             <button
               type="button"
-              disabled={!phone.trim()}
-              onClick={() => setShowRequest(true)}
+              disabled={!phone.trim() || loading}
+              onClick={openRequest}
               className="mt-3 w-full rounded-2xl border-2 border-navy px-5 py-3 font-display text-sm font-extrabold text-navy disabled:opacity-40"
             >
               Ainda não tenho acesso — solicitar liberação
@@ -103,11 +115,11 @@ function ExclusivoPage() {
 
               <p className="text-5xl">🔒</p>
               <h3 className="mt-3 font-display text-xl font-black uppercase leading-tight text-navy">
-                Solicitar Acesso
+                Solicitação Enviada
               </h3>
               <p className="mt-4 text-sm text-ink">
-                Esse telefone ainda não tem acesso liberado. Chama no WhatsApp que a gente libera
-                pra você.
+                Sua solicitação de acesso foi registrada e está aguardando aprovação. Assim que for
+                liberada, é só voltar aqui e entrar com esse número.
               </p>
               <p className="mt-2 font-display text-base font-extrabold text-navy">{phone}</p>
 
@@ -120,7 +132,7 @@ function ExclusivoPage() {
                   rel="noreferrer"
                   className="mt-5 block w-full rounded-2xl bg-green px-5 py-3 text-center font-display text-sm font-extrabold text-primary-foreground shadow-soft transition-transform active:scale-[0.98]"
                 >
-                  📱 Solicitar pelo WhatsApp
+                  📱 Quero agilizar pelo WhatsApp
                 </a>
               ) : null}
 

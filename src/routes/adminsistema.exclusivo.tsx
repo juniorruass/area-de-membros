@@ -4,9 +4,12 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import {
   addExclusivePhone,
   checkAdminAuth,
+  decideExclusiveRequest,
   deleteExclusivePhone,
   listExclusivePhones,
+  listExclusiveRequests,
   type ExclusivePhoneRow,
+  type ExclusiveRequestRow,
 } from "@/api/admin";
 
 export const Route = createFileRoute("/adminsistema/exclusivo")({
@@ -19,16 +22,34 @@ export const Route = createFileRoute("/adminsistema/exclusivo")({
 
 function ExclusivoAdmin() {
   const [rows, setRows] = useState<ExclusivePhoneRow[] | null>(null);
+  const [requests, setRequests] = useState<ExclusiveRequestRow[] | null>(null);
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deciding, setDeciding] = useState<string | null>(null);
 
-  const load = async () => setRows(await listExclusivePhones());
+  const load = async () => {
+    const [phones, reqs] = await Promise.all([listExclusivePhones(), listExclusiveRequests()]);
+    setRows(phones);
+    setRequests(reqs);
+  };
 
   useEffect(() => {
     load();
   }, []);
+
+  const decide = async (id: string, approve: boolean) => {
+    setDeciding(id);
+    try {
+      await decideExclusiveRequest({ data: { id, approve } });
+      await load();
+    } finally {
+      setDeciding(null);
+    }
+  };
+
+  const pending = requests?.filter((r) => r.status === "pending") ?? [];
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +82,51 @@ function ExclusivoAdmin() {
           telefone de quem pode acessar esse conteúdo em{" "}
           <span className="font-bold text-navy">/exclusivo</span>.
         </p>
+      </div>
+
+      <div className="mt-5">
+        <p className="font-display text-base font-extrabold text-navy">
+          Solicitações pendentes {pending.length > 0 ? `(${pending.length})` : ""}
+        </p>
+        <div className="mt-2 space-y-2">
+          {requests === null ? (
+            <p className="text-sm text-muted-foreground">Carregando…</p>
+          ) : pending.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nenhuma solicitação pendente.</p>
+          ) : (
+            pending.map((r) => (
+              <div
+                key={r.id}
+                className="flex items-center gap-2 rounded-2xl border border-line bg-card p-3 shadow-soft"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="font-display text-sm font-extrabold text-navy">{r.phone}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(r.created_at).toLocaleString("pt-BR")}
+                  </p>
+                </div>
+                <div className="flex shrink-0 gap-1.5">
+                  <button
+                    type="button"
+                    disabled={deciding === r.id}
+                    onClick={() => decide(r.id, true)}
+                    className="rounded-xl bg-green px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-60"
+                  >
+                    ✓ Aprovar
+                  </button>
+                  <button
+                    type="button"
+                    disabled={deciding === r.id}
+                    onClick={() => decide(r.id, false)}
+                    className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-1.5 text-xs font-bold text-destructive disabled:opacity-60"
+                  >
+                    ✕ Recusar
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       <form

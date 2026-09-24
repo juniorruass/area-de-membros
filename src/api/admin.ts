@@ -251,6 +251,57 @@ export const deleteExclusivePhone = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+// ---------- Solicitações de acesso exclusivo ----------
+
+export type ExclusiveRequestRow = {
+  id: string;
+  phone: string;
+  status: "pending" | "approved" | "declined";
+  created_at: string;
+  decided_at: string | null;
+};
+
+export const listExclusiveRequests = createServerFn({ method: "GET" }).handler(async () => {
+  requireAdmin(await isAdminAuthenticated());
+  const { data, error } = await getSupabaseAdmin()
+    .from("exclusive_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as ExclusiveRequestRow[];
+});
+
+export const decideExclusiveRequest = createServerFn({ method: "POST" })
+  .validator((data: { id: string; approve: boolean }) => data)
+  .handler(async ({ data }) => {
+    requireAdmin(await isAdminAuthenticated());
+    const supabase = getSupabaseAdmin();
+
+    const { data: reqRow, error: selErr } = await supabase
+      .from("exclusive_requests")
+      .select("phone")
+      .eq("id", data.id)
+      .single();
+    if (selErr) throw new Error(selErr.message);
+
+    if (data.approve) {
+      const { error: insErr } = await supabase
+        .from("exclusive_phones")
+        .upsert({ phone: reqRow.phone }, { onConflict: "phone", ignoreDuplicates: true });
+      if (insErr) throw new Error(insErr.message);
+    }
+
+    const { error: updErr } = await supabase
+      .from("exclusive_requests")
+      .update({
+        status: data.approve ? "approved" : "declined",
+        decided_at: new Date().toISOString(),
+      })
+      .eq("id", data.id);
+    if (updErr) throw new Error(updErr.message);
+    return { ok: true };
+  });
+
 // ---------- Settings ----------
 
 export const listSettings = createServerFn({ method: "GET" }).handler(async () => {
