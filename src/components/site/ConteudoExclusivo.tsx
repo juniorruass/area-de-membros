@@ -5,8 +5,11 @@ function youtubeThumb(yt: string) {
   return `https://img.youtube.com/vi/${yt}/hqdefault.jpg`;
 }
 
+const AUTO_SCROLL_MIN = 5;
+
 export function ConteudoExclusivo({ preview }: { preview: PublicExclusivePreview[] }) {
-  const track = preview.length > 0 ? [...preview, ...preview] : [];
+  const autoScroll = preview.length >= AUTO_SCROLL_MIN;
+  const track = autoScroll ? [...preview, ...preview] : preview;
   const duration = Math.max(18, preview.length * 5);
 
   return (
@@ -24,15 +27,21 @@ export function ConteudoExclusivo({ preview }: { preview: PublicExclusivePreview
 
           {track.length > 0 ? (
             <div className="relative mt-6 -mx-6 overflow-hidden">
-              <style>{`
-                @keyframes exclusivo-marquee {
-                  from { transform: translateX(0); }
-                  to { transform: translateX(-50%); }
-                }
-              `}</style>
+              {autoScroll ? (
+                <style>{`
+                  @keyframes exclusivo-marquee {
+                    from { transform: translateX(0); }
+                    to { transform: translateX(-50%); }
+                  }
+                `}</style>
+              ) : null}
               <div
-                className="flex w-max gap-3 px-6 [animation-play-state:running] hover:[animation-play-state:paused]"
-                style={{ animation: `exclusivo-marquee ${duration}s linear infinite` }}
+                className={`flex gap-4 px-6 ${
+                  autoScroll
+                    ? "w-max [animation-play-state:running] hover:[animation-play-state:paused]"
+                    : "overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                }`}
+                style={autoScroll ? { animation: `exclusivo-marquee ${duration}s linear infinite` } : undefined}
               >
                 {track.map((item, i) => {
                   const img = item.yt
@@ -43,7 +52,7 @@ export function ConteudoExclusivo({ preview }: { preview: PublicExclusivePreview
                   return (
                     <div
                       key={`${item.id}-${i}`}
-                      className="relative w-[140px] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-navy text-left shadow-soft"
+                      className="relative w-[190px] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-navy text-left shadow-soft"
                     >
                       <div className="relative aspect-video w-full overflow-hidden bg-navy">
                         {img ? (
@@ -54,11 +63,11 @@ export function ConteudoExclusivo({ preview }: { preview: PublicExclusivePreview
                             className="h-full w-full object-cover"
                           />
                         ) : null}
-                        <span className="absolute left-1.5 top-1.5 flex size-6 items-center justify-center rounded-full bg-white/90 text-xs text-navy shadow-soft">
+                        <span className="absolute left-2 top-2 flex size-8 items-center justify-center rounded-full bg-white/90 text-sm text-navy shadow-soft">
                           🔒
                         </span>
                       </div>
-                      <p className="p-2 text-xs font-semibold leading-snug text-primary-foreground/90">
+                      <p className="p-2.5 text-sm font-semibold leading-snug text-primary-foreground/90">
                         {item.title}
                       </p>
                     </div>
