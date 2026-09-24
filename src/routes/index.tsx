@@ -42,7 +42,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { moldes, videos, settings, winner } = Route.useLoaderData();
+  const { moldes, videos, settings, winner, exclusivePreview } = Route.useLoaderData();
   const [custo, setCusto] = useState(0);
 
   return (
@@ -57,7 +57,7 @@ function Index() {
       <Hero />
       <Sorteio winner={winner} />
       <Pagamento pixKey={settings.pix_key} pixName={settings.pix_name} />
-      <ConteudoExclusivo />
+      <ConteudoExclusivo preview={exclusivePreview} />
       <Aulas videos={videos} />
       <Moldes moldes={moldes} />
       <Precificacao custo={custo} />

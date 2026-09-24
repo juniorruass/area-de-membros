@@ -15,6 +15,15 @@ export type PublicVideo = { id: string; yt: string; title: string; cat: string }
 
 export type PublicWinner = { name: string; city: string; prize: string };
 
+export type PublicExclusivePreview = {
+  id: string;
+  type: "video" | "molde";
+  title: string;
+  cat: string;
+  yt: string | null;
+  cover_path: string | null;
+};
+
 export type PublicSettings = {
   pix_key: string;
   pix_name: string;
@@ -59,9 +68,33 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
   const allMoldes = moldesRes.data as (PublicMolde & { exclusive: boolean })[];
   const allVideos = videosRes.data as (PublicVideo & { exclusive: boolean })[];
 
+  const exclusivePreview: PublicExclusivePreview[] = [
+    ...allVideos
+      .filter((v) => v.exclusive)
+      .map((v) => ({
+        id: v.id,
+        type: "video" as const,
+        title: v.title,
+        cat: v.cat,
+        yt: v.yt,
+        cover_path: null,
+      })),
+    ...allMoldes
+      .filter((m) => m.exclusive)
+      .map((m) => ({
+        id: m.id,
+        type: "molde" as const,
+        title: m.title,
+        cat: m.cat,
+        yt: null,
+        cover_path: m.cover_path,
+      })),
+  ];
+
   return {
     moldes: allMoldes.filter((m) => !m.exclusive),
     videos: allVideos.filter((v) => !v.exclusive),
+    exclusivePreview,
     settings: {
       pix_key: settingsMap["pix_key"] ?? "",
       pix_name: settingsMap["pix_name"] ?? "",
