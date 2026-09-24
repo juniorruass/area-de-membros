@@ -84,15 +84,16 @@ function ExclusivoPage() {
             >
               {loading ? "Verificando…" : "Entrar"}
             </button>
-          </form>
 
-          <button
-            type="button"
-            onClick={() => setShowRequest(true)}
-            className="mt-4 text-sm font-semibold text-muted-foreground underline"
-          >
-            Ainda não tenho acesso — solicitar liberação
-          </button>
+            <button
+              type="button"
+              disabled={!phone.trim()}
+              onClick={() => setShowRequest(true)}
+              className="mt-3 w-full rounded-2xl border-2 border-navy px-5 py-3 font-display text-sm font-extrabold text-navy disabled:opacity-40"
+            >
+              Ainda não tenho acesso — solicitar liberação
+            </button>
+          </form>
         </div>
 
         {showRequest ? (
@@ -108,11 +109,12 @@ function ExclusivoPage() {
                 Esse telefone ainda não tem acesso liberado. Chama no WhatsApp que a gente libera
                 pra você.
               </p>
+              <p className="mt-2 font-display text-base font-extrabold text-navy">{phone}</p>
 
               {settings.suporte_whatsapp ? (
                 <a
                   href={`https://wa.me/${settings.suporte_whatsapp}?text=${encodeURIComponent(
-                    "Oi! Quero pedir a liberação do meu acesso ao conteúdo exclusivo.",
+                    `Oi! Quero pedir a liberação do meu acesso ao conteúdo exclusivo. Meu telefone: ${phone}`,
                   )}`}
                   target="_blank"
                   rel="noreferrer"
