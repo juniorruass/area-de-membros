@@ -119,14 +119,14 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
                         src={youtubeThumb(v.yt)}
                         alt={v.title}
                         loading="lazy"
-                        className={`h-full w-full object-cover ${v.exclusive ? "scale-110 blur-[4px]" : ""}`}
+                        className="h-full w-full object-cover"
                       />
                       {v.exclusive ? (
-                        <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-navy-deep/55">
+                        <span className="absolute inset-0 flex flex-col items-center justify-center gap-1">
                           <span className="flex size-9 items-center justify-center rounded-full bg-white/90 text-lg text-navy shadow-soft">
                             🔒
                           </span>
-                          <span className="pill bg-pink text-[10px] text-navy">Exclusivo</span>
+                          <span className="pill bg-pink text-[10px] text-navy shadow-soft">Exclusivo</span>
                         </span>
                       ) : (
                         <span className="absolute inset-0 flex items-center justify-center bg-navy-deep/20">
