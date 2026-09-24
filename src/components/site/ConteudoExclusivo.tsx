@@ -1,6 +1,4 @@
-export function ConteudoExclusivo({ show }: { show: boolean }) {
-  if (!show) return null;
-
+export function ConteudoExclusivo() {
   return (
     <section className="px-5 py-10">
       <div className="mx-auto max-w-[720px]">

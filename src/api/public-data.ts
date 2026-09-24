@@ -58,12 +58,10 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
 
   const allMoldes = moldesRes.data as (PublicMolde & { exclusive: boolean })[];
   const allVideos = videosRes.data as (PublicVideo & { exclusive: boolean })[];
-  const hasExclusive = allMoldes.some((m) => m.exclusive) || allVideos.some((v) => v.exclusive);
 
   return {
     moldes: allMoldes.filter((m) => !m.exclusive),
     videos: allVideos.filter((v) => !v.exclusive),
-    hasExclusive,
     settings: {
       pix_key: settingsMap["pix_key"] ?? "",
       pix_name: settingsMap["pix_name"] ?? "",
