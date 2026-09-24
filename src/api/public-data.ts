@@ -11,7 +11,13 @@ export type PublicMolde = {
   kind: string;
 };
 
-export type PublicVideo = { id: string; yt: string; title: string; cat: string };
+export type PublicVideo = {
+  id: string;
+  yt: string;
+  title: string;
+  cat: string;
+  exclusive: boolean;
+};
 
 export type PublicWinner = { name: string; city: string; prize: string };
 
@@ -93,7 +99,7 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
 
   return {
     moldes: allMoldes.filter((m) => !m.exclusive),
-    videos: allVideos.filter((v) => !v.exclusive),
+    videos: allVideos,
     exclusivePreview,
     settings: {
       pix_key: settingsMap["pix_key"] ?? "",

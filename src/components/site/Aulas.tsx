@@ -6,7 +6,10 @@ function youtubeThumb(yt: string) {
 }
 
 export function Aulas({ videos }: { videos: PublicVideo[] }) {
-  const [current, setCurrent] = useState<PublicVideo | null>(videos[0] ?? null);
+  const [current, setCurrent] = useState<PublicVideo | null>(
+    videos.find((v) => !v.exclusive) ?? null,
+  );
+  const [locked, setLocked] = useState<PublicVideo | null>(null);
   const playerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -21,6 +24,10 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
   }, [videos]);
 
   const select = (v: PublicVideo) => {
+    if (v.exclusive) {
+      setLocked(v);
+      return;
+    }
     setCurrent(v);
     playerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -28,8 +35,6 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
   const scrollRow = (cat: string, dir: 1 | -1) => {
     rowRefs.current[cat]?.scrollBy({ left: dir * 280, behavior: "smooth" });
   };
-
-  if (!current) return null;
 
   return (
     <section id="aulas" className="px-5 py-12">
@@ -44,28 +49,30 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
           </p>
         </div>
 
-        <div
-          ref={playerRef}
-          className="mt-6 overflow-hidden rounded-3xl border border-line bg-card shadow-soft"
-        >
-          <div className="aspect-video w-full bg-navy-deep">
-            <iframe
-              key={current.yt}
-              className="h-full w-full"
-              src={`https://www.youtube-nocookie.com/embed/${current.yt}?modestbranding=1&rel=0&iv_load_policy=3&color=white`}
-              title={current.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
+        {current ? (
+          <div
+            ref={playerRef}
+            className="mt-6 overflow-hidden rounded-3xl border border-line bg-card shadow-soft"
+          >
+            <div className="aspect-video w-full bg-navy-deep">
+              <iframe
+                key={current.yt}
+                className="h-full w-full"
+                src={`https://www.youtube-nocookie.com/embed/${current.yt}?modestbranding=1&rel=0&iv_load_policy=3&color=white`}
+                title={current.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+            <div className="p-4">
+              <p className="font-display text-xs font-extrabold uppercase tracking-wider text-pink">
+                ▶ Assistindo · {current.cat}
+              </p>
+              <p className="mt-1 text-sm font-semibold text-navy">{current.title}</p>
+            </div>
           </div>
-          <div className="p-4">
-            <p className="font-display text-xs font-extrabold uppercase tracking-wider text-pink">
-              ▶ Assistindo · {current.cat}
-            </p>
-            <p className="mt-1 text-sm font-semibold text-navy">{current.title}</p>
-          </div>
-        </div>
+        ) : null}
 
         <div className="mt-8 space-y-8">
           {groups.map(([cat, list]) => (
@@ -104,7 +111,7 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
                     type="button"
                     onClick={() => select(v)}
                     className={`w-[150px] shrink-0 overflow-hidden rounded-2xl border text-left transition-colors ${
-                      current.id === v.id ? "border-pink" : "border-line"
+                      current?.id === v.id ? "border-pink" : "border-line"
                     } bg-card shadow-soft`}
                   >
                     <div className="relative aspect-video w-full overflow-hidden bg-navy-deep">
@@ -112,13 +119,22 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
                         src={youtubeThumb(v.yt)}
                         alt={v.title}
                         loading="lazy"
-                        className="h-full w-full object-cover"
+                        className={`h-full w-full object-cover ${v.exclusive ? "scale-110 blur-[4px]" : ""}`}
                       />
-                      <span className="absolute inset-0 flex items-center justify-center bg-navy-deep/20">
-                        <span className="flex size-9 items-center justify-center rounded-full bg-white/90 text-lg text-pink shadow-soft">
-                          ▶
+                      {v.exclusive ? (
+                        <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-navy-deep/55">
+                          <span className="flex size-9 items-center justify-center rounded-full bg-white/90 text-lg text-navy shadow-soft">
+                            🔒
+                          </span>
+                          <span className="pill bg-pink text-[10px] text-navy">Exclusivo</span>
                         </span>
-                      </span>
+                      ) : (
+                        <span className="absolute inset-0 flex items-center justify-center bg-navy-deep/20">
+                          <span className="flex size-9 items-center justify-center rounded-full bg-white/90 text-lg text-pink shadow-soft">
+                            ▶
+                          </span>
+                        </span>
+                      )}
                     </div>
                     <p className="p-2 text-xs font-semibold leading-snug text-ink">{v.title}</p>
                   </button>
@@ -128,6 +144,40 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
           ))}
         </div>
       </div>
+
+      {locked ? (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-navy-deep/70 px-5">
+          <div className="relative w-full max-w-[380px] overflow-hidden rounded-3xl bg-card p-6 text-center shadow-pop">
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-pink" />
+
+            <p className="text-5xl">🔒</p>
+            <h3 className="mt-3 font-display text-xl font-black uppercase leading-tight text-navy">
+              Conteúdo Exclusivo
+            </h3>
+            <p className="mt-4 text-sm text-ink">
+              Esse conteúdo é exclusivo e ainda não foi liberado no seu acesso.{" "}
+              <b className="text-navy">{locked.title}</b>
+            </p>
+
+            <a
+              href="/exclusivo"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-5 block w-full rounded-2xl bg-pink px-5 py-3 font-display text-sm font-extrabold text-navy shadow-soft transition-transform active:scale-[0.98]"
+            >
+              🔓 Liberar acesso exclusivo
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setLocked(null)}
+              className="mt-4 text-sm font-semibold text-muted-foreground underline"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
