@@ -16,7 +16,7 @@ export function PagamentoNaoIdentificado({
 
   useEffect(() => {
     const STORAGE_KEY = "pagamento_popup_last_shown";
-    const INTERVAL_MS = 2 * 60 * 60 * 1000;
+    const INTERVAL_MS = 60 * 60 * 1000;
 
     const maybeShow = () => {
       let last = 0;
