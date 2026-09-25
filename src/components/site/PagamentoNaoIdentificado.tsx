@@ -15,8 +15,32 @@ export function PagamentoNaoIdentificado({
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setOpen(true), 20000);
-    return () => clearTimeout(timer);
+    const STORAGE_KEY = "pagamento_popup_last_shown";
+    const INTERVAL_MS = 2 * 60 * 60 * 1000;
+
+    const maybeShow = () => {
+      let last = 0;
+      try {
+        last = Number(localStorage.getItem(STORAGE_KEY) || 0);
+      } catch {
+        last = 0;
+      }
+      if (Date.now() - last >= INTERVAL_MS) {
+        setOpen(true);
+        try {
+          localStorage.setItem(STORAGE_KEY, String(Date.now()));
+        } catch {
+          // ignora — sem localStorage, o popup só aparece nesta sessão
+        }
+      }
+    };
+
+    const initialTimer = setTimeout(maybeShow, 20000);
+    const recurring = setInterval(maybeShow, 60000);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(recurring);
+    };
   }, []);
 
   if (!open) return null;

@@ -5,7 +5,6 @@ import { Sorteio } from "@/components/site/Sorteio";
 import { Pagamento } from "@/components/site/Pagamento";
 import { Moldes } from "@/components/site/Moldes";
 import { Aulas } from "@/components/site/Aulas";
-import { ConteudoExclusivo } from "@/components/site/ConteudoExclusivo";
 import { Precificacao } from "@/components/site/Precificacao";
 import { CustoProducao } from "@/components/site/CustoProducao";
 import { Bonus } from "@/components/site/Bonus";
@@ -42,7 +41,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { moldes, videos, settings, winner, exclusivePreview } = Route.useLoaderData();
+  const { moldes, videos, settings, winner, hasExclusiveAccess } = Route.useLoaderData();
   const [custo, setCusto] = useState(0);
 
   return (
@@ -57,7 +56,6 @@ function Index() {
       <Hero />
       <Sorteio winner={winner} />
       <Pagamento pixKey={settings.pix_key} pixName={settings.pix_name} />
-      <ConteudoExclusivo preview={exclusivePreview} />
       <Aulas videos={videos} />
       <Moldes moldes={moldes} />
       <Precificacao custo={custo} />
@@ -77,12 +75,14 @@ function Index() {
       </footer>
 
       <BuyPopup />
-      <PagamentoNaoIdentificado
-        pixKey={settings.pix_key}
-        whatsapp={settings.suporte_whatsapp}
-        whatsappLabel={settings.suporte_whatsapp_label}
-        groupUrl={settings.whatsapp_group_url}
-      />
+      {!hasExclusiveAccess ? (
+        <PagamentoNaoIdentificado
+          pixKey={settings.pix_key}
+          whatsapp={settings.suporte_whatsapp}
+          whatsappLabel={settings.suporte_whatsapp_label}
+          groupUrl={settings.whatsapp_group_url}
+        />
+      ) : null}
       <BottomNav />
     </main>
   );

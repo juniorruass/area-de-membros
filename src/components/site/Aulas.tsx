@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import type { PublicVideo } from "@/api/public-data";
+import { YoutubePlayer } from "@/components/site/YoutubePlayer";
 
 function youtubeThumb(yt: string) {
   return `https://img.youtube.com/vi/${yt}/hqdefault.jpg`;
@@ -10,7 +11,6 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
     videos.find((v) => !v.exclusive) ?? null,
   );
   const [locked, setLocked] = useState<PublicVideo | null>(null);
-  const [playing, setPlaying] = useState(false);
   const playerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -30,7 +30,6 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
       return;
     }
     setCurrent(v);
-    setPlaying(true);
     playerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -56,31 +55,7 @@ export function Aulas({ videos }: { videos: PublicVideo[] }) {
             ref={playerRef}
             className="mt-6 overflow-hidden rounded-3xl border border-line bg-card shadow-soft"
           >
-            <div className="aspect-video w-full bg-navy-deep">
-              {playing ? (
-                <iframe
-                  key={current.yt}
-                  className="h-full w-full"
-                  src={`https://www.youtube-nocookie.com/embed/${current.yt}?modestbranding=1&rel=0&iv_load_policy=3&color=white&autoplay=1`}
-                  title={current.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setPlaying(true)}
-                  className="flex h-full w-full flex-col items-center justify-center gap-3"
-                >
-                  <span className="flex size-16 items-center justify-center rounded-full bg-pink text-3xl text-navy shadow-soft transition-transform active:scale-95">
-                    ▶
-                  </span>
-                  <span className="px-6 text-center text-sm font-semibold text-primary-foreground/80">
-                    Toque para assistir
-                  </span>
-                </button>
-              )}
-            </div>
+            <YoutubePlayer key={current.yt} videoId={current.yt} title={current.title} />
             <div className="p-4">
               <p className="font-display text-xs font-extrabold uppercase tracking-wider text-pink">
                 ▶ Assistindo · {current.cat}

@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { readExclusiveSession } from "@/lib/exclusive-session";
 
 export type PublicMolde = {
   id: string;
@@ -42,7 +43,10 @@ export type PublicSettings = {
 export const getPublicData = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getSupabaseAdmin();
 
-  const [moldesRes, videosRes, winnersRes, settingsRes] = await Promise.all([
+  const exclusiveSession = await readExclusiveSession();
+  const sessionPhone = exclusiveSession.data.phone;
+
+  const [moldesRes, videosRes, winnersRes, settingsRes, exclusiveAccessRes] = await Promise.all([
     supabase
       .from("moldes")
       .select("id, cat, title, pages, file_path, cover_path, kind, exclusive")
@@ -56,12 +60,18 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
       .select("name, city, prize")
       .order("sort_order", { ascending: true }),
     supabase.from("settings").select("key, value"),
+    sessionPhone
+      ? supabase.from("exclusive_phones").select("id").eq("phone", sessionPhone).maybeSingle()
+      : Promise.resolve({ data: null, error: null }),
   ]);
 
   if (moldesRes.error) throw new Error(moldesRes.error.message);
   if (videosRes.error) throw new Error(videosRes.error.message);
   if (winnersRes.error) throw new Error(winnersRes.error.message);
   if (settingsRes.error) throw new Error(settingsRes.error.message);
+  if (exclusiveAccessRes.error) throw new Error(exclusiveAccessRes.error.message);
+
+  const hasExclusiveAccess = Boolean(exclusiveAccessRes.data);
 
   const settingsMap: Record<string, string> = {};
   for (const row of settingsRes.data as { key: string; value: string }[]) {
@@ -101,6 +111,7 @@ export const getPublicData = createServerFn({ method: "GET" }).handler(async () 
     moldes: allMoldes.filter((m) => !m.exclusive),
     videos: allVideos,
     exclusivePreview,
+    hasExclusiveAccess,
     settings: {
       pix_key: settingsMap["pix_key"] ?? "",
       pix_name: settingsMap["pix_name"] ?? "",
